@@ -1,0 +1,248 @@
+/* Focused first aid: neutral instruction surfaces, explicit urgency, persistent access to 112. */
+#emergencyModal { --aid-red:#ad3042; --aid-red-soft:#fff1f2; --aid-amber:#87521d; --aid-amber-soft:#fff6e8; padding:18px; }
+#emergencyModal .aid-shell { width:min(1220px,100%); max-width:1220px; padding:28px 32px 32px; border-radius:28px; background:var(--bg); max-height:calc(100dvh - 36px); box-shadow:0 24px 100px #132c4640; }
+.aid-toolbar { position:sticky; top:-28px; z-index:8; display:flex; align-items:center; gap:12px; padding:10px 0; margin:-18px 0 26px; background:var(--bg); border-bottom:1px solid var(--line); }
+.aid-toolbar > span { flex:1; font-size:.86rem; color:var(--muted); font-weight:650; }
+.aid-toolbar > a { color:var(--aid-red); padding:10px 14px; font-weight:750; text-decoration:none; background:var(--aid-red-soft); border-radius:10px; }
+#emergencyModal .close { position:static; width:44px; height:44px; padding:0; border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:12px; }
+.aid-header { display:flex; justify-content:space-between; }
+.aid-header h2 { font-size:clamp(1.85rem,3.2vw,2.65rem); font-weight:740; letter-spacing:-.045em; line-height:1.15; margin:6px 0 10px; }
+.aid-eyebrow { color:var(--muted); font-size:.73rem; font-weight:700; letter-spacing:.1em; margin:0 0 9px; }
+.aid-subtitle { color:var(--muted); font-size:1rem; margin:0; }
+.aid-callbar { display:flex; gap:14px; align-items:center; padding:16px 20px; background:var(--aid-red-soft); border:1px solid #edc4cb; color:var(--aid-red); border-radius:16px; margin:24px 0; font-size:.88rem; }
+.aid-callbar > span { flex:1; }
+.aid-call,#emergencyModal .aid-danger-button { display:inline-flex; align-items:center; justify-content:center; min-height:46px; padding:12px 18px; background:var(--aid-red); color:white; border:1px solid transparent; border-radius:11px; text-decoration:none; font-size:.9rem; font-weight:650; }
+.aid-call-alt { color:var(--aid-red); padding:12px 8px; font-weight:700; text-underline-offset:4px; }
+.aid-progress { display:flex; list-style:none; margin:0 0 28px; padding:0; gap:16px; }
+.aid-progress li { flex:1; display:flex; align-items:center; gap:10px; border-bottom:2px solid var(--line); padding:0 0 14px; color:var(--muted); font-size:.9rem; }
+.aid-progress b { display:grid; place-items:center; width:30px; height:30px; border-radius:10px; background:var(--surface); border:1px solid var(--line); font-size:.8rem; }
+.aid-progress [aria-current='step'] { color:var(--blue); border-color:var(--blue); font-weight:700; }
+.aid-progress [aria-current='step'] b { background:var(--button); color:var(--on-button); border-color:transparent; }
+.aid-progress .is-complete b { background:var(--surface-soft); border-color:transparent; color:var(--teal); }
+.aid-layout { display:grid; grid-template-columns:minmax(0,1fr) 240px; align-items:start; gap:26px; }
+.aid-main,.aid-aside { min-width:0; }
+.aid-section { padding:26px; border:1px solid var(--line); border-radius:20px; background:var(--surface); margin-bottom:22px; box-shadow:0 3px 12px #182c4203; }
+#emergencyModal h3 { font-size:1.4rem; letter-spacing:-.025em; line-height:1.3; margin:0 0 12px; }
+#emergencyModal p { line-height:1.65; }
+.aid-section > p:not(.aid-eyebrow) { color:var(--muted); font-size:.98rem; margin:0 0 24px; max-width:65ch; }
+.aid-state-options { display:grid; gap:12px; }
+#emergencyModal .aid-state { display:flex; gap:16px; align-items:center; text-align:left; border:1px solid var(--line); border-radius:15px; background:var(--surface); color:var(--ink); padding:19px; width:100%; transition:border-color .15s,background .15s; }
+.aid-state > span:nth-child(2) { flex:1; }
+.aid-state strong,.aid-state small { display:block; }
+.aid-state strong { font-size:1rem; line-height:1.4; }
+.aid-state small { color:var(--muted); font-size:.85rem; font-weight:400; margin-top:4px; }
+.aid-state-icon { display:grid; place-items:center; flex:none; width:48px; height:48px; border-radius:14px; color:var(--blue); background:var(--surface-soft); }
+.aid-state-icon .icon { width:27px; height:27px; }
+.aid-state-danger .aid-state-icon { color:var(--aid-red); background:var(--aid-red-soft); }
+#emergencyModal .aid-state[aria-pressed='true'] { border-color:var(--blue); box-shadow:inset 0 0 0 1px var(--blue); background:var(--surface-soft); }
+#emergencyModal .aid-state-danger[aria-pressed='true'] { border-color:var(--aid-red); box-shadow:inset 0 0 0 1px var(--aid-red); background:var(--aid-red-soft); }
+.aid-pocket { background:#172b42; color:#f5f8ff; padding:25px; border-radius:20px; }
+.aid-pocket-mark { display:grid; place-items:center; width:44px; height:44px; border-radius:13px; margin-bottom:30px; color:#c5d7ff; background:#ffffff12; font-size:1.8rem; }
+#emergencyModal .aid-pocket h3 { font-size:1.5rem; }
+.aid-pocket p,.aid-pocket li { color:#c5d2e3; font-size:.87rem; line-height:1.7; }
+.aid-pocket ul { margin:22px 0; padding-left:17px; }
+.aid-pocket li { margin:10px 0; }
+.aid-pocket .aid-offline { margin:25px 0 0; padding-top:17px; border-top:1px solid #ffffff26; font-size:.74rem; }
+.aid-offline span { color:#8ed7d0; margin-right:5px; }
+.aid-details { padding:17px 0; border-top:1px solid var(--line); margin:10px 0 0; font-size:.93rem; }
+.aid-details > summary { cursor:pointer; min-height:36px; display:list-item; font-weight:650; line-height:1.55; color:var(--ink); }
+.aid-details p { font-size:.93rem; margin:12px 0; }
+.aid-details a { overflow-wrap:anywhere; }
+.aid-details .aid-guide { margin-top:18px; }
+.aid-profile p { overflow-wrap:anywhere; }
+.aid-sources { padding-left:18px; }
+.aid-sources li { margin-bottom:10px; }
+.aid-measure-heading { display:flex; align-items:center; justify-content:space-between; gap:18px; }
+.aid-measure-heading button { flex:none; font-size:.84rem; }
+#emergencyReadingForm { margin-top:26px; padding:24px; border-radius:16px; background:var(--surface-soft); }
+#emergencyReadingForm > label { margin-top:0; font-size:1.06rem; }
+.aid-reading { display:grid; grid-template-columns:minmax(0,1fr) 130px; gap:10px; margin:12px 0; }
+#emergencyModal .aid-reading input { font-size:1.9rem; min-height:68px; font-variant-numeric:tabular-nums; background:var(--surface); }
+#emergencyModal .aid-reading select { min-height:68px; font-size:.93rem; padding:10px; background:var(--surface); }
+#emergencyModal .aid-primary { background:var(--button); color:var(--on-button); min-height:50px; width:100%; display:flex; gap:16px; justify-content:center; align-items:center; border-radius:12px; }
+.aid-outofrange { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:16px; }
+.aid-outofrange span { color:var(--muted); font-size:.85rem; }
+#emergencyModal .aid-outofrange button { background:var(--surface); border:1px solid var(--line); color:var(--ink); min-height:44px; font-size:.84rem; padding:9px 12px; }
+.aid-personal:not(:empty) { border-left:3px solid var(--teal); padding:16px; margin:18px 0; font-size:.95rem; }
+.aid-shell:not([data-aid-phase='triage']) .aid-header,.aid-shell:not([data-aid-phase='triage']) .aid-callbar { display:none; }
+.aid-shell:not([data-aid-phase='triage']) .aid-triage { padding:16px; }
+.aid-shell:not([data-aid-phase='triage']) .aid-triage > p { display:none; }
+.aid-shell:not([data-aid-phase='triage']) .aid-triage > h3 { font-size:.95rem!important; margin:0 0 12px!important; }
+.aid-shell:not([data-aid-phase='triage']) .aid-state-options { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+#emergencyModal .aid-shell:not([data-aid-phase='triage']) .aid-state { padding:10px; gap:8px; border-radius:11px; }
+.aid-shell:not([data-aid-phase='triage']) .aid-state strong { font-size:.8rem; }
+.aid-shell:not([data-aid-phase='triage']) .aid-state small,.aid-shell:not([data-aid-phase='triage']) .aid-state > span:last-child { display:none; }
+.aid-shell:not([data-aid-phase='triage']) .aid-state-icon { width:30px; height:30px; border-radius:9px; }
+.aid-shell:not([data-aid-phase='triage']) .aid-state-icon .icon { width:21px; height:21px; }
+.aid-critical { background:var(--surface); border:1px solid #e4aab4; border-top:5px solid var(--aid-red); border-radius:20px; padding:26px; margin:0 0 22px; }
+.aid-critical > h3,.aid-critical > .aid-eyebrow { color:var(--aid-red); }
+.aid-actions { padding:0; margin:25px 0 0; list-style:none; }
+.aid-actions > li { display:flex; gap:16px; margin:0; padding:0 0 26px; }
+.aid-actions > li:last-child { padding-bottom:6px; }
+.aid-step-number { display:grid; place-items:center; flex:none; width:32px; height:32px; border-radius:11px; background:var(--surface-soft); color:var(--blue); font-weight:750; font-size:.9rem; }
+.aid-critical .aid-step-number { color:var(--aid-red); background:var(--aid-red-soft); }
+.aid-actions li > div { flex:1; min-width:0; }
+.aid-actions h4 { margin:2px 0 9px; font-size:1.07rem; line-height:1.4; }
+.aid-actions p { margin:0 0 12px; font-size:.98rem; }
+.aid-breathing { display:grid; grid-template-columns:1fr 1.3fr; gap:10px; margin:12px 0 24px; }
+.aid-breathing [aria-pressed='true'] { outline:3px solid var(--ink); outline-offset:3px; }
+.aid-critical-rule { padding:16px; background:var(--aid-red-soft); border-radius:12px; margin:20px 0 0; font-size:.94rem; }
+.aid-cpr { padding:20px; border:2px solid var(--aid-red); background:var(--aid-red-soft); border-radius:15px; margin-top:20px; }
+.aid-cpr h4,.aid-glucagon-callout h4 { font-size:1.1rem; margin:0 0 12px; }
+.aid-cpr p,.aid-glucagon-callout p,.aid-no-insulin { font-size:.98rem; }
+.aid-result-header { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:26px; border:1px solid var(--line); border-radius:20px 20px 0 0; background:var(--surface-soft); }
+.aid-result-header.is-low { background:var(--aid-red-soft); border-color:#edbdc5; }
+.aid-result-header.is-high { background:var(--aid-amber-soft); border-color:#e5d2b7; }
+.aid-result-header p:last-child { font-size:.91rem; margin-bottom:0; }
+.aid-result-number { flex:none; font-size:3.5rem; font-weight:730; line-height:1.15; letter-spacing:-.05em; font-variant-numeric:tabular-nums; }
+.aid-result-number small { display:block; text-align:right; font-size:.87rem; font-weight:500; margin-top:7px; letter-spacing:0; }
+.aid-result-header.is-low .aid-result-number { color:var(--aid-red); }
+.aid-result-header.is-high .aid-result-number { color:var(--aid-amber); }
+.aid-deterioration { padding:22px 26px; background:var(--surface); border:1px solid var(--line); border-top:0; border-radius:0 0 20px 20px; margin-bottom:22px; }
+.aid-deterioration strong { font-size:1rem; }
+.aid-deterioration p { font-size:.93rem; margin:7px 0 15px; }
+.aid-critical-preview { color:var(--muted); }
+.aid-carb-examples { display:flex; align-items:center; gap:14px; padding:20px; background:var(--surface-soft); border-radius:15px; margin:20px 0; }
+.aid-carb-examples > span { flex:1; font-size:.87rem; }
+.aid-carb-examples b { display:block; font-size:1.9rem; font-weight:720; margin-bottom:3px; }
+.aid-carb-examples .aid-or { flex:0; color:var(--muted); }
+.aid-important { background:var(--aid-amber-soft); border-left:3px solid var(--aid-amber); padding:18px; border-radius:0 12px 12px 0; margin:20px 0; font-size:.96rem; }
+.aid-important p { margin:9px 0; }
+.aid-timer { display:grid; grid-template-columns:1fr auto; align-items:center; gap:15px; padding:24px; margin:22px 0; border:2px solid var(--blue); border-radius:20px; background:var(--surface-soft); }
+.aid-timer output { font-size:2.8rem; font-weight:700; letter-spacing:-.04em; font-variant-numeric:tabular-nums; }
+.aid-timer p { font-size:.88rem; margin:7px 0 0; }
+.aid-timer button { grid-column:1/-1; }
+.aid-timer.is-due { border-color:var(--aid-red); background:var(--aid-red-soft); }
+#emergencyModal .emergency-correction { padding:26px; margin:22px 0; border:1px solid var(--line); border-radius:20px; background:var(--surface); }
+.emergency-correction > p { font-size:.96rem; }
+.correction-checks { background:var(--surface-soft); padding:18px; border-radius:14px; margin:22px 0; }
+#emergencyModal .check-label { align-items:flex-start; font-size:.94rem; line-height:1.6; gap:12px; }
+.correction-result { background:var(--surface-soft); border-left:3px solid var(--blue); padding:20px; margin-top:20px; border-radius:0 14px 14px 0; font-size:.96rem; }
+.correction-formula { margin-top:18px; font-size:.91rem; }
+.correction-formula summary { min-height:44px; cursor:pointer; padding:10px 0; }
+#emergencyCorrectionCalculate { width:100%; margin-top:18px; }
+#emergencyModal :is(input,select,button,a,summary) { touch-action:manipulation; }
+#emergencyResult,#emergencyUnconsciousResult,#aidBreathingResult,#aidMeasureTitle,#aidStateTitle,#emergencySugarValue { scroll-margin:80px; }
+[data-theme='dark'] #emergencyModal { --aid-red:#ffacba; --aid-red-soft:#382a38; --aid-amber:#e8c081; --aid-amber-soft:#343126; }
+[data-theme='dark'] #emergencyModal .aid-danger-button,[data-theme='dark'] #emergencyModal .aid-call { color:#341923; }
+.high-contrast #emergencyModal { --aid-red:#92172b; --aid-amber:#724208; }
+.high-contrast[data-theme='dark'] #emergencyModal { --aid-red:#ffd0d8; --aid-amber:#ffe1aa; }
+@media (max-width:950px) {
+  .aid-layout { grid-template-columns:minmax(0,1fr); }
+  .aid-pocket { display:none; }
+  .aid-aside { border-top:1px solid var(--line); }
+}
+@media (max-width:600px) {
+  #emergencyModal { padding:0; }
+  #emergencyModal .aid-shell { padding:18px 14px max(28px,env(safe-area-inset-bottom)); max-height:100dvh; height:100dvh; border-radius:0; }
+  .aid-toolbar { top:-18px; margin-top:-10px; margin-bottom:20px; padding:8px 0; }
+  .aid-header h2 { font-size:1.95rem; }
+  .aid-subtitle { font-size:.95rem; }
+  .aid-callbar { flex-wrap:wrap; padding:15px; margin:20px 0; }
+  .aid-callbar > span { flex-basis:100%; }
+  .aid-callbar .aid-call { flex:1; }
+  .aid-progress { gap:9px; margin-bottom:20px; }
+  .aid-progress li { font-size:.77rem; gap:7px; min-width:0; flex-direction:column; align-items:flex-start; }
+  .aid-progress b { width:26px; height:26px; border-radius:8px; }
+  .aid-section,.aid-critical,.aid-result-header { padding:21px 16px; border-radius:17px; }
+  #emergencyModal h3 { font-size:1.32rem; }
+  #emergencyModal .aid-state { padding:16px 12px; gap:12px; }
+  .aid-state strong { font-size:.96rem; }
+  .aid-state small { font-size:.84rem; }
+  .aid-state-icon { width:41px; height:41px; border-radius:12px; }
+  .aid-measure-heading { flex-wrap:wrap; gap:0; margin-bottom:16px; }
+  .aid-measure-heading button { padding-left:0; }
+  .aid-shell:not([data-aid-phase='triage']) .aid-triage { padding:12px; }
+  .aid-shell:not([data-aid-phase='triage']) .aid-state-options { grid-template-columns:minmax(0,1fr); }
+  #emergencyModal .aid-shell:not([data-aid-phase='triage']) .aid-state { flex-direction:row; align-items:center; gap:10px; padding:10px 12px; }
+  .aid-shell:not([data-aid-phase='triage']) .aid-state strong { font-size:.9rem; }
+  .aid-shell:not([data-aid-phase='triage']) .aid-state-icon { width:27px; height:27px; }
+  #emergencyReadingForm { padding:17px 13px; margin-inline:-2px; }
+  #emergencyModal .aid-reading { grid-template-columns:minmax(0,1fr) 108px; gap:7px; }
+  #emergencyModal .aid-reading input { font-size:1.7rem; padding:10px; min-height:62px; }
+  #emergencyModal .aid-reading select { min-height:62px; font-size:.86rem; }
+  .aid-result-header { border-radius:17px 17px 0 0; flex-wrap:wrap; gap:14px; }
+  .aid-result-header h3 { max-width:16ch; }
+  .aid-result-number { font-size:3rem; }
+  .aid-deterioration { padding:19px 16px; }
+  .aid-deterioration button { width:100%; }
+  .aid-breathing { grid-template-columns:minmax(0,1fr); gap:12px; }
+  .aid-actions > li { gap:10px; padding-bottom:23px; }
+  .aid-actions h4 { font-size:1.03rem; }
+  .aid-actions p { font-size:.96rem; }
+  .aid-step-number { width:27px; height:27px; border-radius:9px; }
+  .aid-carb-examples { padding:17px 13px; gap:10px; margin-left:-2px; }
+  .aid-carb-examples b { font-size:1.55rem; }
+  .aid-carb-examples > span { font-size:.8rem; }
+  .aid-important { padding:16px; }
+  #emergencyModal .emergency-correction { padding:21px 16px; }
+  .correction-checks { padding:14px; }
+  .aid-timer { padding:18px; gap:12px; }
+  .aid-timer output { font-size:2.1rem; }
+}
+
+/* One active stage, with generous illustration space and persistent emergency controls. */
+#emergencyModal .aid-shell { width:min(1120px,100%); max-width:1120px; }
+.aid-layout { grid-template-columns:minmax(0,1fr); gap:12px; }
+.aid-main { width:100%; }
+.aid-aside { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; border-top:1px solid var(--line); margin-top:12px; }
+.aid-pocket { display:none; }
+.aid-aside .aid-details { border:0; font-size:.85rem; }
+.aid-aside summary { font-size:.86rem; }
+.aid-toolbar { gap:10px; }
+#aidChangeState { min-height:44px; font-size:.81rem; padding:9px 12px; }
+#aidMeasurement { padding:8px 0 24px; border:0; background:transparent; box-shadow:none; }
+#aidMeasurement > p { max-width:76ch; margin-bottom:18px; }
+.aid-result-tools { display:flex; align-items:center; justify-content:space-between; gap:16px; margin:0 0 16px; color:var(--muted); font-size:.87rem; }
+.aid-result-tools button { font-size:.84rem; }
+.aid-sequence-tabs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin:22px 0; }
+#emergencyModal .aid-sequence-tabs button { display:flex; align-items:flex-start; gap:9px; min-width:0; padding:13px 12px; text-align:left; color:var(--muted); border:1px solid var(--line); background:var(--surface); border-radius:12px; font-size:.83rem; font-weight:500; line-height:1.45; }
+.aid-sequence-tabs b { display:grid; place-items:center; flex:none; width:24px; height:24px; border-radius:8px; background:var(--surface-soft); font-size:.75rem; }
+#emergencyModal .aid-sequence-tabs [aria-pressed=true] { color:var(--blue); background:var(--surface-soft); border-color:var(--blue); font-weight:650; }
+.aid-sequence { scroll-margin-top:110px; min-height:190px; margin:0; }
+.aid-sequence > li { gap:0; padding:12px 0 24px; }
+.aid-sequence > li > .aid-step-number { display:none; }
+.aid-sequence h4 { font-size:1.4rem; margin-bottom:14px; letter-spacing:-.025em; }
+.aid-sequence-controls { display:flex; align-items:center; justify-content:space-between; gap:12px; padding-top:18px; border-top:1px solid var(--line); }
+.aid-sequence-controls button { min-height:46px; }
+.aid-sequence-controls output { color:var(--muted); font-size:.83rem; text-align:center; }
+@media(max-width:700px) {
+  .aid-aside { grid-template-columns:minmax(0,1fr); gap:0; }
+  .aid-aside .aid-details { padding:13px 0; margin:0; }
+  .aid-toolbar { flex-wrap:wrap; padding-bottom:10px; }
+  .aid-toolbar > span { min-width:0; font-size:.8rem; }
+  #aidChangeState { order:4; flex-basis:100%; padding:8px 12px; margin:0; }
+  .aid-shell:not([data-aid-phase=triage]) .aid-toolbar { margin-bottom:16px; }
+  .aid-result-tools { flex-wrap:wrap; gap:9px; }
+  .aid-result-tools button { width:100%; }
+  .aid-sequence-tabs { gap:6px; }
+  #emergencyModal .aid-sequence-tabs button { justify-content:center; padding:8px; min-height:44px; }
+  .aid-sequence-tabs button span { display:none; }
+  .aid-sequence { min-height:0; scroll-margin-top:145px; }
+  .aid-sequence h4 { font-size:1.25rem; }
+  .aid-sequence-controls { flex-wrap:wrap; gap:8px; }
+  .aid-sequence-controls output { order:3; width:100%; }
+  #aidMeasurement { padding-top:6px; }
+}
+@media(max-width:380px) {
+  .aid-toolbar > span { max-width:calc(100% - 132px); }
+}
+
+/* Clearer entry: one question, three visual choices, no repeated introduction. */
+.aid-header h2 { margin:0; font-size:clamp(1.8rem,3vw,2.4rem); }
+.aid-callbar { margin:20px 0; }
+.aid-triage { border:0; padding:8px 0 24px; box-shadow:none; background:transparent; }
+.aid-triage > p { margin-bottom:20px; }
+.aid-state-options { gap:10px; }
+#emergencyModal .aid-state { min-height:85px; }
+.aid-deterioration { padding:20px 26px; }
+.aid-deterioration p { margin:8px 0; }
+#emergencyModal .aid-critical-preview { font-size:.85rem; line-height:1.5; margin-bottom:14px; }
+@media(max-width:600px) {
+  .aid-toolbar { margin-bottom:18px; }
+  .aid-callbar { padding:13px 15px; margin:16px 0 20px; }
+  #emergencyModal .aid-triage > h3 { font-size:1.35rem; }
+  #emergencyModal .aid-state { padding:14px 12px; min-height:78px; }
+  .aid-triage > p { font-size:.88rem; margin-bottom:16px; }
+  .aid-deterioration { padding:17px 16px; }
+}

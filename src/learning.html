@@ -1,0 +1,57 @@
+<div id="learningModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="learningTitle">
+  <div class="modal-content learning-shell" data-stage="welcome">
+    <header class="learning-toolbar">
+      <div><span class="learning-mode-badge">Тренировка</span><p>Учебный пример · данные не сохраняются</p></div>
+      <button type="button" class="icon-btn close" data-close aria-label="Закрыть тренировку">×</button>
+    </header>
+    <h2 id="learningTitle" class="sr-only">Тренировка измерения сахара</h2>
+    <ol class="learning-progress" aria-label="Этапы тренировки"><li aria-current="step"><span>1</span> Схемы</li><li><span>2</span> Ввод</li><li><span>3</span> Готово</li></ol>
+
+    <section id="learningWelcome" class="learning-pane learning-welcome" aria-labelledby="learningWelcomeTitle">
+      <div class="learning-welcome-copy">
+        <h3 id="learningWelcomeTitle" tabindex="-1">Измерить сахар.<br>Шаг за шагом.</h3>
+        <p class="learning-lead">Посмотрите на схемы и попробуйте перенести показание прибора.</p>
+        <button id="learningBegin" type="button" class="learning-primary">Посмотреть шаги <span aria-hidden="true">→</span></button>
+        <button id="learningSkipGuide" type="button" class="text-btn learning-skip">Сразу попробовать ввод →</button>
+      </div>
+      <div class="learning-welcome-art" aria-hidden="true">
+        <div id="learningWelcomeIllustration" class="learning-shared-art"></div>
+        <div class="learning-art-key"><span><b>1</b> Число</span><span><b>2</b> Единица</span></div>
+      </div>
+    </section>
+
+    <section id="learningInstructions" class="learning-pane hidden" aria-label="Учебная инструкция">
+      <div class="learning-section-heading"><h3 id="learningGuideTitle" tabindex="-1">Измерение по шагам</h3><button id="learningGoToReading" type="button" class="text-btn">К вводу числа →</button></div>
+      <div id="learningGuideHost"></div>
+    </section>
+
+    <section id="learningReading" class="learning-pane hidden" aria-labelledby="learningReadingTitle">
+      <div class="learning-section-heading"><h3 id="learningReadingTitle" tabindex="-1">Перенесите показание</h3></div>
+      <div class="learning-exercise">
+        <div class="learning-example">
+          <div class="learning-example-top">Экран прибора</div>
+          <div class="learning-meter" role="img" id="learningExampleScreen" aria-label="Учебный пример: 5,8 ммоль/л"><div id="learningExampleDevice" class="learning-meter-body" aria-hidden="true"></div><div class="learning-meter-content" aria-hidden="true"><span class="learning-meter-label">ПРИМЕР</span><strong id="learningExampleValue">5,8</strong><span id="learningExampleUnit">ммоль/л</span></div></div>
+          <div class="learning-example-key" aria-hidden="true"><span><b>1</b> Число</span><span><b>2</b> Единица</span></div>
+          <div class="learning-example-switch" role="group" aria-label="Выбрать учебный пример"><button type="button" data-learning-example="mmol" aria-pressed="true">ммоль/л</button><button type="button" data-learning-example="mgdl" aria-pressed="false">мг/дл</button></div>
+        </div>
+        <form id="learningReadingForm" class="learning-answer" novalidate>
+          <label for="learningReadingValue"><b aria-hidden="true">1</b> Число</label>
+          <input id="learningReadingValue" type="text" inputmode="decimal" autocomplete="off" maxlength="12" placeholder="Как на экране" aria-describedby="learningReadingHint"/>
+          <label for="learningReadingUnit"><b aria-hidden="true">2</b> Единица</label>
+          <select id="learningReadingUnit"><option value="">Выберите единицу</option><option value="mmol">ммоль/л</option><option value="mgdl">мг/дл</option></select>
+          <p id="learningReadingHint" class="hint">Число — с запятой или точкой.</p>
+          <p id="learningReadingError" class="learning-feedback hidden" role="alert"></p>
+          <button type="submit" id="learningCheck" class="learning-primary">Проверить <span aria-hidden="true">→</span></button>
+        </form>
+      </div>
+      <button id="learningBackToGuide" type="button" class="text-btn learning-back">← К инструкции</button>
+    </section>
+
+    <section id="learningComplete" class="learning-pane learning-complete hidden" aria-labelledby="learningCompleteTitle">
+      <div class="learning-success-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><path pathLength="1" d="m13 24 8 8 15-18"/></svg></div>
+      <h3 id="learningCompleteTitle" tabindex="-1">Число и единица совпали</h3>
+      <div class="learning-confirmed-example"><strong id="learningMatchedReading"></strong></div>
+      <div class="learning-complete-actions"><button type="button" data-close class="learning-primary">Готово <span aria-hidden="true">✓</span></button><button type="button" id="learningTryOther" class="secondary">Другой пример</button><button type="button" id="learningRestart" class="text-btn">Пройти сначала</button></div>
+    </section>
+  </div>
+</div>

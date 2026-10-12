@@ -1,0 +1,45 @@
+<div id="emergencyModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="emergencyTitle">
+  <div class="modal-content aid-shell">
+    <div class="aid-toolbar"><span>Экстренная помощь</span><button type="button" id="aidChangeState" class="secondary hidden">Состояние изменилось</button><a href="tel:112" aria-label="Позвонить 112">112 ↗</a><button class="close" type="button" data-close aria-label="Закрыть экстренную помощь">×</button></div>
+    <header class="aid-header">
+      <h2 id="emergencyTitle">Поможем по шагам</h2>
+    </header>
+    <div class="aid-callbar"><span><strong>Без сознания или трудно дышит?</strong><br>Звоните сразу. Измерение может подождать.</span><a href="tel:112" class="aid-call">Позвонить 112 ↗</a><a href="tel:103" class="aid-call-alt" aria-label="Позвонить в скорую помощь 103">103</a></div>
+    <ol class="aid-progress" aria-label="Порядок помощи"><li aria-current="step"><b>1</b><span>Состояние</span></li><li><b>2</b><span>Измерение</span></li><li><b>3</b><span>Что делать</span></li></ol>
+    <div class="aid-layout">
+      <div class="aid-main">
+        <section class="aid-section aid-triage" aria-labelledby="aidStateTitle">
+          <h3 id="aidStateTitle">Человек отвечает и может глотать?</h3><p>Обратитесь к нему и осторожно коснитесь плеча.</p>
+          <div class="aid-state-options">
+            <button id="emergencyConsciousBtn" type="button" class="aid-state" aria-pressed="false"><span class="aid-state-icon" aria-hidden="true">✓</span><span><strong>В сознании, может глотать</strong><small>Отвечает связно, выполняет просьбы</small></span><span aria-hidden="true">→</span></button>
+            <button id="emergencyUnknownBtn" type="button" class="aid-state aid-state-danger" aria-pressed="false"><span class="aid-state-icon" aria-hidden="true">!</span><span><strong>Без сознания</strong><small>Не отвечает или не удаётся разбудить</small></span><span aria-hidden="true">→</span></button>
+            <button id="emergencyCannotSwallowBtn" type="button" class="aid-state aid-state-danger" aria-pressed="false"><span class="aid-state-icon" aria-hidden="true">!</span><span><strong>Не может глотать / судороги</strong><small>Сильная спутанность или нужна помощь</small></span><span aria-hidden="true">→</span></button>
+          </div>
+        </section>
+        <div id="emergencyUnconsciousResult" tabindex="-1"></div>
+        <section id="aidMeasurement" class="aid-section hidden" aria-labelledby="aidMeasureTitle">
+          <div class="aid-measure-heading"><div><p class="aid-eyebrow">ШАГ 2 · ИЗМЕРЬТЕ САХАР</p><h3 id="aidMeasureTitle">Измерение без спешки</h3></div><button type="button" id="aidSkipGuide" class="text-btn">Сахар уже измерен ↓</button></div><p>Подготовьте глюкометр, подходящую тест-полоску и новый ланцет. При резком ухудшении состояния сразу звоните 112.</p>
+          <div id="aidMeasureGuide"></div><div id="measureInstruction" class="multiline aid-personal"></div>
+          <form id="emergencyReadingForm" novalidate>
+            <label for="emergencySugarValue">Какое значение на экране?</label>
+            <div class="aid-reading"><input id="emergencySugarValue" type="text" inputmode="decimal" autocomplete="off" maxlength="12" placeholder="Например, 5,8" aria-describedby="aidReadingHint" /><select id="emergencyUnit" aria-label="Единица на глюкометре"><option value="mmol">ммоль/л</option><option value="mgdl">мг/дл</option></select></div>
+            <p id="aidReadingHint" class="hint">Число и единица — как на экране прибора.</p>
+            <p id="aidReadingError" class="form-error hidden" role="alert"></p>
+            <button type="submit" id="emergencyEvaluateBtn" class="aid-primary">Показать, что делать <span aria-hidden="true">→</span></button>
+            <div class="aid-outofrange"><span>Вместо числа:</span><button type="button" id="aidLoBtn" class="secondary">LO · очень низкий</button><button type="button" id="aidHiBtn" class="secondary">HI · очень высокий</button></div>
+          </form>
+          <details class="aid-details"><summary>Нет прибора или не получается измерить</summary><p>Если человек бодрствует, безопасно глотает и есть признаки гипогликемии (дрожь, пот, резкий голод), действуйте как при низком сахаре, не откладывая помощь. При спутанности, судорогах или потере сознания — 112 и ничего через рот.</p><button type="button" id="aidSuspectedLowBtn" class="secondary">Помощь при подозрении на гипогликемию</button></details>
+        </section>
+        <section id="emergencyResult" class="hidden" tabindex="-1" aria-label="Что делать по результату измерения"></section>
+        <div id="aidResultTools" class="aid-result-tools hidden"><span>Есть новое измерение?</span><button type="button" id="aidNewReading" class="secondary">Ввести новое измерение →</button></div>
+        <section id="aidTimer" class="aid-timer hidden" aria-label="Повторное измерение"><div><strong>Повторно измерьте сахар</strong><p id="aidTimerHint">Через 15 минут после быстрых углеводов</p></div><output id="aidTimerValue" aria-label="Осталось до повторного измерения">15:00</output><button type="button" id="aidTimerMeasure" class="secondary">Ввести новый результат</button><p id="aidTimerAnnouncement" class="sr-only" role="status"></p></section>
+      </div>
+      <aside class="aid-aside">
+        <section class="aid-pocket"><div class="aid-pocket-mark" aria-hidden="true">+</div><h3>Вы рядом.<br>Это уже помощь.</h3><p>Оставайтесь с человеком. Говорите спокойно и выполняйте по одному действию.</p><ul><li>Не оставляйте одного</li><li>Не давайте ничего в рот, если не может глотать</li><li>Не вводите инсулин без сознания</li></ul><p class="aid-offline"><span aria-hidden="true">●</span> Инструкции работают без интернета</p></section>
+        <details id="aidProfileDetails" class="aid-details aid-profile"><summary>Данные для бригады помощи</summary><p id="emergencyIdentity"></p><div id="emergencyPhones" class="phone-list-emergency"></div><p id="emergencyAddress"></p><p id="emergencyDoctor"></p><p id="emergencyNotes" class="multiline"></p><strong>Последние записи инсулина</strong><div id="emergencyRecentInsulin"></div><p class="hint">Записи могут быть неполными. Дневник не определяет активный инсулин.</p></details>
+        <details class="aid-details"><summary>Как определяются значения</summary><p>Для первой помощи: ниже 4 ммоль/л (72 мг/дл) — низкий сахар; ниже 3 ммоль/л (54 мг/дл) — выраженно низкий. Тяжесть определяется и состоянием человека.</p><p id="aidThresholdNote"></p><p>Эти границы не устанавливают диагноз. Опасные симптомы требуют помощи при любом значении.</p></details>
+        <details class="aid-details"><summary>Источники и границы инструкции</summary><p>Общие алгоритмы первой помощи. У детей количество углеводов и дозы препаратов отличаются: нужен индивидуальный план. Назначения и инструкцию конкретного устройства уточняйте заранее с лечащей командой.</p><ul class="aid-sources"><li><a href="https://www.nhs.uk/conditions/low-blood-sugar-hypoglycaemia/" target="_blank" rel="noopener noreferrer">NHS · низкий сахар</a></li><li><a href="https://www.nhs.uk/conditions/high-blood-sugar-hyperglycaemia/" target="_blank" rel="noopener noreferrer">NHS · высокий сахар</a></li><li><a href="https://www.cdc.gov/diabetes/about/diabetic-ketoacidosis.html" target="_blank" rel="noopener noreferrer">CDC · кетоны и кетоацидоз</a></li><li><a href="https://www.nhs.uk/conditions/first-aid/recovery-position/" target="_blank" rel="noopener noreferrer">NHS · положение на боку</a></li><li><a href="https://www.medicines.org.uk/emc/product/1289/pil" target="_blank" rel="noopener noreferrer">GlucaGen HypoKit · инструкция</a></li><li><a href="https://www.nhs.uk/medicines/insulin/rapid-acting-insulin/how-and-when-to-take-rapid-acting-insulin/" target="_blank" rel="noopener noreferrer">NHS · шприц-ручка</a></li></ul><p class="hint">Проверено 12.10.2026. Интернет нужен только для открытия источников.</p></details>
+      </aside>
+    </div>
+  </div>
+</div>

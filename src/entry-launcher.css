@@ -1,0 +1,79 @@
+@media screen {
+  .entry-launcher-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 42px;
+    padding: 9px 15px;
+    white-space: nowrap;
+    border-radius: 13px;
+    font-size: .82rem;
+    font-weight: 700;
+  }
+  .entry-launcher-btn > span:first-child { font-size: 1.4rem; font-weight: 400; line-height: 1; }
+  .entry-launcher-modal .modal-content { max-width: 470px; }
+  .entry-launcher-modal .modal-head { align-items: flex-start; border-bottom: 0; padding-bottom: 0; margin-bottom: 12px; }
+  .entry-launcher-modal .eyebrow { margin: 2px 0 9px; font-size: .65rem; }
+  .entry-launcher-modal h2 { margin: 0; font-size: 1.7rem; }
+  .entry-launcher-description { color: var(--muted); font-size: .9rem; line-height: 1.55; margin: 0 0 24px; }
+  .entry-launcher-options { display: grid; gap: 4px; }
+  .entry-launcher-modal .entry-launcher-option {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr) 20px;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    min-width: 0;
+    padding: 15px 8px;
+    position: relative;
+    border: 0;
+    border-radius: 16px;
+    background: transparent;
+    color: var(--ink);
+    text-align: left;
+  }
+  .entry-launcher-option + .entry-launcher-option::before { content: ''; position: absolute; height: 1px; top: 0; left: 75px; right: 8px; background: var(--line); }
+  .entry-launcher-option strong { display: block; font-size: 1rem; line-height: 1.3; font-weight: 700; }
+  .entry-launcher-option small { display: block; margin-top: 5px; color: var(--muted); font-size: .77rem; line-height: 1.4; font-weight: 400; }
+  .entry-launcher-symbol { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 16px; color: var(--teal); background: var(--teal-soft); }
+  .entry-launcher-symbol .icon { width: 25px; height: 25px; stroke-width: 1.8; }
+  [data-launch-entry='food'] .entry-launcher-symbol { color: var(--food-ink); background: var(--food-soft); }
+  [data-launch-entry='insulin'] .entry-launcher-symbol { color: var(--insulin-ink); background: var(--insulin-soft); }
+  [data-launch-entry='wellbeing'] .entry-launcher-symbol { color: var(--blue); background: var(--accent-soft); }
+  .entry-launcher-arrow { color: var(--muted); font-size: 1.25rem; font-weight: 400; }
+  .entry-launcher-option:hover { background: var(--surface-soft); color: var(--ink); }
+}
+@media screen and (max-width: 850px) {
+  .entry-launcher-btn {
+    position: fixed;
+    z-index: 19;
+    right: max(18px, env(safe-area-inset-right));
+    bottom: calc(86px + env(safe-area-inset-bottom));
+    min-height: 50px;
+    padding: 12px 20px;
+    border: 1px solid var(--surface);
+    border-radius: 18px;
+    box-shadow: 0 5px 20px #172b4233;
+    font-size: .9rem;
+  }
+  #appMain .pages { padding-bottom: calc(170px + env(safe-area-inset-bottom)); }
+  /* Reading and typing remain unobstructed while an input or modal owns the screen. */
+  body:has(.modal-overlay:not(.hidden)) .entry-launcher-btn,
+  #appMain:has(input:focus, textarea:focus, select:focus) .entry-launcher-btn { visibility: hidden; pointer-events: none; }
+}
+@media screen and (max-width: 600px) {
+  .entry-launcher-modal .modal-content { width: 100%; max-width: none; padding-top: 27px; }
+  .entry-launcher-modal .modal-content::before { content: ''; position: absolute; top: 9px; left: calc(50% - 19px); width: 38px; height: 4px; border-radius: 4px; background: var(--line); }
+  .entry-launcher-modal .modal-content { position: relative; }
+  .entry-launcher-modal h2 { font-size: 1.55rem; }
+  .entry-launcher-description { margin-bottom: 14px; font-size: .86rem; }
+  .entry-launcher-modal .entry-launcher-option { grid-template-columns: 47px minmax(0, 1fr) 16px; gap: 12px; padding: 12px 2px; }
+  .entry-launcher-option + .entry-launcher-option::before { left: 61px; right: 2px; }
+  .entry-launcher-symbol { width: 47px; height: 47px; border-radius: 14px; }
+  .entry-launcher-option strong { font-size: .98rem; }
+  .entry-launcher-option small { font-size: .76rem; }
+}
+@media print {
+  .entry-launcher-btn, .entry-launcher-modal { display: none !important; }
+}

@@ -1,0 +1,15 @@
+<div id="startGuideModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="startGuideTitle" aria-describedby="startGuideLead">
+  <div class="modal-content start-guide-shell">
+    <header class="start-guide-toolbar">
+      <div class="start-guide-brand"><span aria-hidden="true">d.</span><strong>DiabControl</strong></div>
+      <button id="startGuideEmergency" type="button" class="start-guide-emergency"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4 2.5 20h19L12 4Z"/><path d="M12 9v5m0 3v.1"/></svg>Экстренная помощь · 112</button>
+      <button type="button" class="icon-btn close" data-close aria-label="Пропустить знакомство">×</button>
+    </header>
+    <div class="start-guide-topline"><p>КАК ЭТО РАБОТАЕТ</p><ol class="start-guide-progress" aria-label="Этапы знакомства"><li aria-current="step"><span class="sr-only">1. Состояние</span></li><li><span class="sr-only">2. Показание</span></li><li><span class="sr-only">3. Действия</span></li></ol><output id="startGuideCount" aria-live="polite">1 из 3</output></div>
+    <section class="start-guide-scene" aria-labelledby="startGuideTitle">
+      <div class="start-guide-copy"><h2 id="startGuideTitle" tabindex="-1"></h2><p id="startGuideLead"></p></div>
+      <div class="start-guide-visual"><div id="startGuideArt" class="start-guide-art" aria-hidden="true"></div><button id="startGuideReplay" type="button" class="text-btn start-guide-replay"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 8M4 4v6h6"/></svg><span id="startGuideReplayLabel">Повторить</span></button></div>
+    </section>
+    <footer class="start-guide-footer"><div class="start-guide-navigation"><button id="startGuideBack" type="button" class="secondary" disabled><span aria-hidden="true">←</span> Назад</button><button id="startGuideNext" type="button" class="start-guide-primary">Далее <span aria-hidden="true">→</span></button></div><button id="startGuideDiary" type="button" class="text-btn start-guide-diary">Перейти к дневнику</button></footer>
+  </div>
+</div>

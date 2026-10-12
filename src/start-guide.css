@@ -1,0 +1,92 @@
+/* Three short scenes: motion presents the final state once, never advances a step. */
+#startGuideModal { padding:24px; }
+#startGuideModal .start-guide-shell { width:min(960px,100%); max-width:960px; max-height:calc(100dvh - 48px); padding:0 34px; border-radius:28px; background:var(--surface); }
+.start-guide-toolbar { position:sticky; top:0; z-index:5; display:flex; align-items:center; gap:18px; padding:19px 0; background:var(--surface); border-bottom:1px solid var(--line); }
+.start-guide-brand { display:flex; align-items:center; gap:8px; color:var(--ink); font-size:.86rem; margin-right:auto; }
+.start-guide-brand > span { width:30px; height:30px; display:grid; place-items:center; border-radius:9px; color:#fff; background:#233d5d; font-weight:750; font-size:1.2rem; }
+.start-guide-brand strong { font-weight:700; }
+#startGuideModal .close { position:static; flex:none; width:42px; height:42px; padding:0; color:var(--muted); background:var(--surface); border:1px solid var(--line); border-radius:12px; }
+.start-guide-emergency { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; padding:10px 14px; border:1px solid var(--red); border-radius:12px; color:var(--red); background:transparent; font-size:.79rem; font-weight:720; }
+.start-guide-emergency svg { flex:none; width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.start-guide-topline { display:flex; align-items:center; gap:18px; padding-top:25px; }
+.start-guide-topline > p { margin:0 auto 0 0; color:var(--muted); font-size:.64rem; font-weight:750; letter-spacing:.13em; }
+.start-guide-topline > output { color:var(--muted); font-size:.74rem; white-space:nowrap; }
+.start-guide-progress { display:flex; gap:5px; list-style:none; margin:0; padding:0; }
+.start-guide-progress li { width:28px; height:4px; border-radius:4px; background:var(--line); }
+.start-guide-progress li[aria-current='step'] { background:var(--blue); }
+.start-guide-progress li.is-complete { background:var(--teal); }
+.start-guide-scene { display:grid; grid-template-columns:.88fr 1.12fr; gap:24px; align-items:center; min-height:365px; padding:16px 0 22px; }
+.start-guide-copy { min-width:0; }
+#startGuideModal #startGuideTitle { color:var(--ink); font-size:clamp(2rem,3.7vw,3rem); line-height:1.08; letter-spacing:-.055em; max-width:10ch; margin:0 0 20px; font-weight:730; outline:none; }
+#startGuideLead { color:var(--muted); font-size:1.04rem; line-height:1.6; max-width:28ch; margin:0; }
+.start-guide-visual { min-width:0; }
+.start-guide-art { color:var(--red); }
+.start-guide-art svg { display:block; width:100%; height:auto; overflow:visible; font-family:inherit; }
+.start-guide-visual { border:1px solid #dbe4df; border-radius:24px; padding:12px 14px 8px; background:#f8f6f1; }
+.sg-human-art { overflow:hidden; border-radius:15px; background:#f8f6f1; }
+.sg-human-art img { display:block; width:100%; height:auto; aspect-ratio:1.5; object-fit:contain; }
+.sg-procedure-preview { color:#203b54; }
+.sg-procedure-preview .aid-guide-illustration { width:100%; height:auto; max-height:296px; }
+/* Procedure previews show their complete final pose. Movement belongs to the step viewer. */
+.sg-procedure-preview .aid-guide-illustration * { animation:none !important; }
+.sg-reading-pair { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:9px 20px; padding:7px 0 11px; color:#536b70; font-size:.74rem; line-height:1.5; }
+.sg-reading-pair span { display:inline-flex; align-items:center; gap:6px; }
+.sg-reading-pair b { display:inline-grid; place-items:center; width:22px; height:22px; border:1px solid #c4d6d1; border-radius:50%; font-size:.67rem; font-weight:700; color:#22666d; background:#fffefa; }
+.sg-reading-pair i { font-style:normal; color:#789a9b; }
+.sg-example-step { padding:10px 12px 0; text-align:left; color:#203b54; }
+.sg-example-step > span { display:block; margin-bottom:7px; color:#66817f; font-size:.6rem; font-weight:700; letter-spacing:.12em; }
+.sg-example-step > strong { display:block; max-width:23ch; font-size:1.03rem; line-height:1.4; font-weight:650; }
+.start-guide-art[data-scene='2'] .sg-procedure-preview { margin-top:-12px; }
+.start-guide-visual .start-guide-replay { color:#536b70; }
+.start-guide-replay { display:flex; align-items:center; gap:6px; min-height:40px; font-size:.74rem; padding:7px 10px; color:var(--muted); margin:0 auto; }
+.start-guide-replay svg { width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.start-guide-footer { position:sticky; bottom:0; z-index:5; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:20px 0 24px; border-top:1px solid var(--line); background:var(--surface); }
+.start-guide-navigation { display:flex; align-items:center; gap:10px; order:2; }
+.start-guide-navigation button { min-height:48px; border-radius:12px; }
+#startGuideModal .start-guide-primary { display:inline-flex; align-items:center; justify-content:center; gap:15px; padding:12px 22px; background:var(--button); color:var(--on-button); border:1px solid transparent; font-size:.92rem; font-weight:650; }
+#startGuideBack { font-size:.84rem; padding:12px 16px; }
+.start-guide-diary { font-size:.79rem; color:var(--muted); padding:12px 0; min-height:44px; }
+.sg-enter { animation:sg-enter .65s cubic-bezier(.2,.7,.2,1) both; transform-box:fill-box; transform-origin:center; }
+.sg-stage-two { animation-delay:.55s; }
+.sg-stage-three { animation-delay:1.15s; }
+.sg-draw { stroke-dasharray:52; animation:sg-draw .8s ease .65s both; }
+@keyframes sg-enter { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+@keyframes sg-draw { from { stroke-dashoffset:52; } to { stroke-dashoffset:0; } }
+.reduce-motion .start-guide-shell *, .reduce-motion .start-guide-shell *::before, .reduce-motion .start-guide-shell *::after { animation:none !important; transition:none !important; }
+@media (prefers-reduced-motion:reduce) { .start-guide-shell *, .start-guide-shell *::before, .start-guide-shell *::after { animation:none !important; transition:none !important; } }
+@media (max-width:720px) {
+  #startGuideModal { padding:0; }
+  #startGuideModal .start-guide-shell { width:100%; max-width:100%; max-height:100dvh; min-height:100dvh; border:0; border-radius:0; padding:0 22px; }
+  .start-guide-toolbar { display:grid; grid-template-columns:1fr auto; gap:10px; padding:max(12px,env(safe-area-inset-top)) 0 12px; }
+  .start-guide-toolbar .close { grid-column:2; grid-row:1; }
+  .start-guide-emergency { grid-column:1/-1; grid-row:2; min-height:42px; }
+  .start-guide-topline { padding-top:21px; gap:12px; }
+  .start-guide-topline > p { font-size:.6rem; letter-spacing:.08em; }
+  .start-guide-progress li { width:21px; }
+  .start-guide-scene { grid-template-columns:1fr; gap:4px; min-height:0; padding:25px 0 12px; }
+  #startGuideModal #startGuideTitle { font-size:2.2rem; max-width:none; margin-bottom:12px; }
+  #startGuideLead { max-width:34ch; font-size:.96rem; line-height:1.55; }
+  .start-guide-visual { max-width:430px; width:100%; margin:15px auto 0; padding:8px 8px 5px; border-radius:20px; }
+  .start-guide-art { margin-top:5px; }
+  .start-guide-replay { margin-top:0; }
+  .sg-reading-pair { gap:7px 13px; padding-bottom:4px; font-size:.69rem; }
+  .start-guide-footer { flex-direction:column; gap:3px; padding:14px 0 max(12px,env(safe-area-inset-bottom)); }
+  .start-guide-navigation { width:100%; order:0; }
+  #startGuideNext { flex:1; }
+  #startGuideModal .start-guide-primary { padding:12px 14px; font-size:.88rem; gap:8px; }
+  #startGuideBack { padding:12px; }
+  .start-guide-diary { font-size:.77rem; }
+}
+@media (max-width:360px) {
+  #startGuideModal .start-guide-shell { padding-left:16px; padding-right:16px; }
+  #startGuideModal #startGuideTitle { font-size:1.95rem; }
+  .start-guide-topline { gap:8px; }
+  .start-guide-progress li { width:17px; }
+  .start-guide-emergency { font-size:.74rem; padding-inline:9px; }
+  .start-guide-brand { font-size:.8rem; }
+  #startGuideModal .start-guide-primary { font-size:.81rem; }
+}
+@media (max-width:720px) and (max-height:700px) {
+  .start-guide-scene { padding-top:19px; }
+  .start-guide-visual { max-width:320px; }
+}

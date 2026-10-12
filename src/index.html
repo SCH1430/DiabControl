@@ -1,0 +1,1418 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content"
+    />
+    <meta name="theme-color" content="#f4f6fa" />
+    <meta name="referrer" content="no-referrer" />
+    <title>DiabControl — личный дневник</title>
+    <style>
+      /* APP_CSS */
+    </style>
+  </head>
+  <body>
+    <div id="statusMessage" class="status-message hidden" role="status" aria-live="polite" aria-atomic="true">
+      <span id="statusText"></span>
+      <button id="editToastBtn" type="button" class="hidden">Изменить</button>
+      <button id="undoToastBtn" type="button" class="hidden">Вернуть</button>
+      <button id="dismissStatus" type="button" aria-label="Закрыть сообщение">×</button>
+    </div>
+    <aside id="appUpdateBanner" class="notice hidden">
+      <strong>Доступно обновление приложения.</strong>
+      <p>Сохраните открытые формы перед обновлением. Сохранённые записи останутся в этом браузере.</p>
+      <button type="button" id="applyUpdateBtn">Обновить приложение</button>
+    </aside>
+    <main>
+      <section id="authContainer" class="auth-container">
+        <div class="auth-story">
+          <div class="auth-brand"><span class="brand-mark" aria-hidden="true">d.</span><strong>DiabControl</strong></div>
+          <button type="button" id="authQuickEmergency" class="emergency-btn auth-quick-help">Помощь · 112</button>
+          <p class="eyebrow">ПОМОЩЬ ПРИ ДИАБЕТЕ</p>
+          <h1>Понятно, что<br>делать дальше.</h1>
+          <p class="auth-lead">Наглядные инструкции и ваш дневник.</p>
+          <div class="auth-medical-art"><img class="auth-illustration" src="__MEDICAL_ART_PORTRAIT__" alt="" width="1024" height="1024" decoding="async"/></div>
+          <button type="button" id="authStartGuideBtn" class="auth-guide-button" data-open-start-guide><span><small>3 ПРОСТЫХ ШАГА</small>Посмотреть гайд</span><span aria-hidden="true">↗</span></button>
+        </div>
+        <div class="auth-panel">
+        <h2 id="authHeading">Ваш дневник</h2>
+        <p class="auth-panel-lead" id="authLead">Введите имя профиля и пароль.</p>
+        <p class="auth-privacy">Записи зашифрованы и хранятся в этом браузере.</p>
+        <details class="auth-data-help"><summary>Пароль и резервная копия</summary><p>Забытый пароль нельзя восстановить. Регулярно сохраняйте зашифрованную копию: она понадобится для переноса или восстановления дневника.</p></details>
+        <form id="loginForm">
+          <label for="loginUsername">Имя профиля</label>
+          <input id="loginUsername" required maxlength="80" autocomplete="username" />
+          <label for="loginPassword">Пароль</label>
+          <input type="password" id="loginPassword" required autocomplete="current-password" />
+          <button type="submit" id="loginBtn">Открыть дневник</button>
+          <button type="button" id="switchToRegister" class="secondary">Создать профиль</button>
+        </form>
+        <form id="registerForm" class="hidden">
+          <p class="notice">Сохраните пароль: восстановить его нельзя.</p>
+          <label for="regUsername">Имя профиля</label>
+          <input id="regUsername" required maxlength="80" autocomplete="username" />
+          <label for="regPassword">Пароль — от 10 символов</label>
+          <input type="password" id="regPassword" required minlength="10" autocomplete="new-password" />
+          <label for="regPasswordConfirm">Повторите пароль</label>
+          <input
+            type="password"
+            id="regPasswordConfirm"
+            required
+            minlength="10"
+            autocomplete="new-password"
+          />
+          <label for="regDiabType">Тип диабета</label>
+          <select id="regDiabType">
+            <option value="1">Тип 1</option>
+            <option value="2">Тип 2</option>
+          </select>
+          <button type="submit" id="registerBtn">Создать дневник</button>
+          <button type="button" id="switchToLogin" class="secondary">Уже есть профиль</button>
+        </form>
+        <button type="button" id="restoreStartBtn" class="secondary">Восстановить из копии</button>
+        <button type="button" class="text-btn auth-learning-action" data-open-learning>Попробовать на примере →</button>
+        <button type="button" id="publicEmergencyBtn" class="emergency-btn">Экстренная помощь · 112</button>
+        <p id="legacyNotice" class="notice hidden">
+          Обнаружены данные старой версии. Войдите прежним паролем: этот профиль будет зашифрован. Остальные
+          старые профили останутся незашифрованными до первого входа в каждый из них.
+        </p>
+        </div>
+      </section>
+
+      <section id="appMain" class="app-wrapper hidden" aria-label="Дневник">
+        <header class="top-bar">
+          <a class="brand" href="#today" data-nav="today">
+            <span class="brand-mark">d.</span>
+            DiabControl
+          </a>
+          <div class="user-area">
+            <span id="userNameDisplay" class="user-name"></span>
+            <span id="diabTypeBadge" class="badge"></span>
+            <button id="emergencyBtn" class="emergency-btn">Экстренная помощь</button>
+            <button id="profileBtn" class="secondary">Настройки</button>
+            <button id="logoutBtn" class="text-btn">Закрыть</button>
+          </div>
+        </header>
+        <div class="workspace">
+          <nav class="main-nav" aria-label="Разделы дневника">
+            <button type="button" class="nav-button" data-nav="today" id="navToday">
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                <path d="M3 10h18M7 3v4M17 3v4M5 5h14v16H5zM8 14h3v3H8z" />
+              </svg>
+              <span>Сегодня</span>
+            </button>
+            <button type="button" class="nav-button" data-nav="diary" id="navDiary">
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                <path d="M5 3h14v18H5zM8 7h8M8 11h8M8 15h5" />
+              </svg>
+              <span>Дневник</span>
+            </button>
+            <button type="button" class="nav-button" data-nav="food" id="navFood">
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                <path d="M5 3v7m3-7v7M5 7h3M6.5 10v11M17 3c-5 5-5 10 0 10V3v18" />
+              </svg>
+              <span>Питание</span>
+            </button>
+            <button type="button" class="nav-button" data-nav="stats" id="navStats">
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                <path d="M4 20V4M4 20h17M8 16l4-6 4 3 5-8" />
+              </svg>
+              <span>Статистика</span>
+            </button>
+            <div class="nav-foot">
+              <button type="button" class="nav-learning" data-open-learning>Тренировка ↗</button>
+              <span class="online-dot"></span>
+              Локально и без интернета
+            </div>
+          </nav>
+          <div class="pages">
+            <section id="pageToday" class="page">
+              <div class="page-heading">
+                <div>
+                  <p class="eyebrow" id="todayDate"></p>
+                  <h1>Сегодня</h1>
+                </div>
+                <button type="button" id="todayStartGuideBtn" class="text-btn today-learning-action" data-open-start-guide>Быстрый гайд ↗</button>
+              </div>
+              <div class="today-grid">
+                <section class="hero-card" id="homeMeasurement">
+                  <div class="hero-top">
+                    <span>Последнее измерение</span>
+                    <span id="lastSugarState" class="state-pill"></span>
+                  </div>
+                  <div id="lastSugarValue" class="hero-value">—</div>
+                  <p id="lastSugarTime"></p>
+                  <p id="lastSugarContext" class="hero-context hidden"></p>
+                  <div id="homeGlucoseRange" class="home-glucose-range"></div>
+                  <div class="hero-decoration" aria-hidden="true"></div>
+                </section>
+                <section class="card day-summary" id="homeSummary">
+                  <h2>Записи за сегодня</h2>
+                  <div id="todayCounts" class="day-counts"></div>
+                </section>
+              </div>
+              <div class="quick-actions">
+                <button type="button" class="quick-action" data-add="sugar" id="quickSugar">
+                  <span class="action-icon sugar">
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                      <path d="M12 3C9 7 5 11 5 15a7 7 0 0 0 14 0c0-4-4-8-7-12z" />
+                    </svg>
+                  </span>
+                  <span>
+                    <strong>Глюкоза</strong>
+                    <small>Записать измерение</small>
+                  </span>
+                  <span class="plus">+</span>
+                </button>
+                <button type="button" class="quick-action" data-add="food" id="quickFood">
+                  <span class="action-icon food">
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                      <path d="M5 3v7m3-7v7M5 7h3M6.5 10v11M17 3c-5 5-5 10 0 10V3v18" />
+                    </svg>
+                  </span>
+                  <span>
+                    <strong>Еда</strong>
+                    <small>Добавить приём пищи</small>
+                  </span>
+                  <span class="plus">+</span>
+                </button>
+                <button type="button" class="quick-action" data-add="insulin" id="quickInsulin">
+                  <span class="action-icon insulin">
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                      <path d="M15 3l6 6M17 5l-5 5M5 13l6 6M7 15l-4 6M6 12l6 6 7-7-6-6z" />
+                    </svg>
+                  </span>
+                  <span>
+                    <strong>Инсулин</strong>
+                    <small>Записать введённую дозу</small>
+                  </span>
+                  <span class="plus">+</span>
+                </button>
+              </div>
+              <div class="today-tools">
+                <button type="button" class="secondary" id="quickTextBtn">Записать одной фразой</button>
+                <button type="button" class="text-btn" data-add="wellbeing">
+                  ＋ Самочувствие / активность
+                </button>
+              </div>
+              <div id="draftNudge" class="notice hidden"></div>
+              <div id="backupNudge" class="backup-nudge hidden">
+                <div>
+                  <strong>Пора сохранить копию</strong>
+                  <p id="backupNudgeText"></p>
+                </div>
+                <button type="button" class="secondary" data-backup>Сохранить</button>
+              </div>
+              <section id="homeEvents">
+                <div class="section-heading">
+                  <h2>События дня</h2>
+                  <button type="button" class="text-btn" data-nav="diary">Весь дневник →</button>
+                </div>
+                <div id="todayTimeline" class="card timeline"></div>
+              </section>
+              <div class="home-content-grid">
+                <section class="card home-companion" id="homeWellbeing" aria-labelledby="homeWellbeingTitle">
+                  <h2 id="homeWellbeingTitle">Как проходит день?</h2>
+                  <div class="wellbeing-shortcuts" role="group" aria-label="Быстро добавить наблюдение">
+                    <button type="button" class="secondary" data-wellbeing-preset="sleep">Сон</button>
+                    <button type="button" class="secondary" data-wellbeing-preset="stress">Стресс</button>
+                    <button type="button" class="secondary" data-wellbeing-preset="walk">Прогулка</button>
+                    <button type="button" class="secondary" data-wellbeing-preset="exercise">Тренировка</button>
+                    <button type="button" class="secondary" data-wellbeing-preset="energy">Самочувствие</button>
+                  </div>
+                  <button type="button" class="text-btn home-observation-btn" data-wellbeing-preset="observation">＋ Моё наблюдение</button>
+                  <div id="homeWellbeingPreview" class="home-observation"></div>
+                </section>
+                <section class="card" id="homeWeek" aria-labelledby="homeWeekTitle">
+                  <p class="eyebrow" id="homeWeekPeriod"></p>
+                  <div class="section-heading"><h2 id="homeWeekTitle">Последние 7 дней</h2><button type="button" class="text-btn" id="homeWeekStats">График →</button></div>
+                  <div id="homeWeekDays" class="home-week-days" role="group" aria-label="Открыть записи за день"></div>
+                  <div id="homeWeekSummary" class="home-week-summary"></div>
+                  <p class="hint">● Есть записи · без точки — нет данных</p>
+                </section>
+                <section class="card" id="homeDishes" aria-labelledby="homeDishesTitle">
+                  <div class="section-heading"><h2 id="homeDishesTitle">Привычные блюда</h2><button type="button" class="text-btn" data-nav="food">Все →</button></div>
+                  <div id="homeDishList" class="home-dish-list"></div>
+                </section>
+                <section class="card home-visit" id="homeVisit" aria-labelledby="homeVisitTitle">
+                  <h2 id="homeVisitTitle">К следующему приёму</h2>
+                  <div id="homeVisitPreview" class="home-visit-preview"></div>
+                  <div class="button-row"><button type="button" id="homeQuestionsBtn" class="secondary">Мои вопросы</button><button type="button" id="homeReportBtn" class="text-btn">Подготовить отчёт →</button></div>
+                  <div class="home-backup"><span id="homeBackupStatus"></span><button type="button" class="text-btn" data-backup>Сохранить копию</button></div>
+                </section>
+              </div>
+            </section>
+            <section id="pageDiary" class="page hidden">
+              <div class="page-heading">
+                <div>
+                  <h1>Дневник</h1>
+                </div>
+                <div class="button-row">
+                  <button type="button" class="secondary" data-add="wellbeing">＋ Заметка</button>
+                  <button type="button" class="secondary" data-report>Отчёт</button>
+                </div>
+              </div>
+              <div class="segmented diary-views" role="group" aria-label="Вид дневника">
+                <button type="button" data-diary-view="list" aria-pressed="true">Лента</button>
+                <button type="button" data-diary-view="calendar">Календарь</button>
+                <button type="button" data-diary-view="collections">Подборки</button>
+                <button type="button" data-diary-view="trash">Корзина</button>
+              </div>
+              <div class="card" id="diaryListPanel">
+                <label for="diarySearch">Поиск по дневнику</label>
+                <input
+                  type="search"
+                  id="diarySearch"
+                  placeholder="Блюдо, препарат, метка или текст заметки"
+                />
+                <details id="diaryFilters" class="diary-filters" open>
+                  <summary id="diaryFilterSummary">Фильтры</summary>
+                  <div class="toolbar">
+                    <div>
+                      <label for="diaryPeriod">Период</label>
+                      <select id="diaryPeriod">
+                        <option value="today">Сегодня</option>
+                        <option value="7">7 дней</option>
+                        <option value="30">30 дней</option>
+                        <option value="all">Всё время</option>
+                        <option value="date">Выбрать день</option>
+                      </select>
+                    </div>
+                    <div id="diaryDateWrap" class="hidden">
+                      <label for="diaryDate">Дата</label>
+                      <input id="diaryDate" type="date" />
+                    </div>
+                    <div>
+                      <label for="diaryType">Записи</label>
+                      <select id="diaryType">
+                        <option value="all">Все</option>
+                        <option value="sugar">Глюкоза</option>
+                        <option value="food">Питание</option>
+                        <option value="insulin">Инсулин</option>
+                        <option value="wellbeing">Самочувствие и активность</option>
+                      </select>
+                    </div>
+                    <button id="undoBtn" type="button" class="text-btn hidden">
+                      Вернуть удалённую запись
+                    </button>
+                  </div>
+                </details>
+                <p id="diaryResultCount" class="hint" aria-live="polite"></p>
+                <div id="diaryTimeline" class="timeline"></div>
+                <button id="moreDiary" type="button" class="secondary hidden">Показать ещё</button>
+              </div>
+              <section id="diaryCalendarPanel" class="card hidden">
+                <div class="section-heading">
+                  <h2>Календарь записей</h2>
+                  <label for="calendarMonth">
+                    Месяц
+                    <input type="month" id="calendarMonth" />
+                  </label>
+                </div>
+                <div class="calendar-week" aria-hidden="true">
+                  <span>Пн</span>
+                  <span>Вт</span>
+                  <span>Ср</span>
+                  <span>Чт</span>
+                  <span>Пт</span>
+                  <span>Сб</span>
+                  <span>Вс</span>
+                </div>
+                <div id="calendarGrid" class="calendar-grid"></div>
+                <p class="hint">● Глюкоза · ■ Еда · ▲ Инсулин · ✎ Заметка. Число — количество записей.</p>
+                <form id="calendarNoteForm">
+                  <label for="calendarNoteDate">Пометить день</label>
+                  <input type="date" id="calendarNoteDate" required />
+                  <label for="calendarNoteTitle">Событие дня</label>
+                  <input id="calendarNoteTitle" maxlength="120" placeholder="Поездка, тренировка, встреча" />
+                  <button type="submit">Сохранить пометку</button>
+                  <p class="hint">Пустое название удаляет пометку.</p>
+                </form>
+              </section>
+              <section id="diaryCollectionsPanel" class="card hidden">
+                <div class="section-heading">
+                  <h2>Связанные события</h2>
+                  <button type="button" id="newCollectionBtn">＋ Подборка</button>
+                </div>
+                <div id="collectionList"></div>
+              </section>
+              <section id="diaryTrashPanel" class="card hidden">
+                <h2>Корзина</h2>
+                <p class="hint">
+                  Удалённые записи остаются здесь до восстановления или окончательного удаления.
+                </p>
+                <div id="trashList"></div>
+              </section>
+            </section>
+            <section id="pageFood" class="page hidden">
+              <div class="page-heading">
+                <div>
+                  <p class="eyebrow">Меньше повторного ввода</p>
+                  <h1>Питание</h1>
+                  <p class="subtitle">Любимые блюда и привычные порции.</p>
+                </div>
+                <button type="button" data-add="food">+ Добавить еду</button>
+              </div>
+              <div class="food-layout">
+                <section class="card">
+                  <div class="section-heading">
+                    <h2>Мои блюда</h2>
+                    <button id="newFavoriteBtn" type="button" class="text-btn">+ Шаблон</button>
+                  </div>
+                  <label for="foodSearch" class="sr-only">Найти блюдо</label>
+                  <input id="foodSearch" type="search" placeholder="Найти продукт или блюдо" />
+                  <div class="segmented" role="group" aria-label="Список блюд">
+                    <button type="button" data-food-tab="recent" aria-pressed="true">Недавние</button>
+                    <button type="button" data-food-tab="favorites" aria-pressed="false">Избранное</button>
+                  </div>
+                  <div id="foodLibrary" class="food-library"></div>
+                </section>
+                <section class="card calculator">
+                  <p class="eyebrow">Быстрый расчёт</p>
+                  <h2>Углеводы и ХЕ</h2>
+                  <form id="calcForm" novalidate>
+                    <div class="two-cols">
+                      <div>
+                        <label for="calcWeight">Вес, г</label>
+                        <input
+                          id="calcWeight"
+                          type="number"
+                          min="0.1"
+                          max="100000"
+                          step="any"
+                          required
+                          inputmode="decimal"
+                        />
+                      </div>
+                      <div>
+                        <label for="calcCarbsPer100">Углеводы на 100 г</label>
+                        <input
+                          id="calcCarbsPer100"
+                          type="number"
+                          min="0"
+                          max="100"
+                          step="any"
+                          required
+                          inputmode="decimal"
+                        />
+                      </div>
+                    </div>
+                    <p id="calcSettings" class="hint"></p>
+                    <button id="calcXEBtn" type="submit">Рассчитать</button>
+                  </form>
+                  <div id="calcXEResult" class="calc-result hidden" role="status" aria-live="polite"></div>
+                  <button id="calcToFoodBtn" type="button" class="secondary hidden">
+                    Записать приём пищи →
+                  </button>
+                </section>
+              </div>
+            </section>
+            <section id="pageStats" class="page hidden">
+              <div class="page-heading">
+                <div>
+                  <p class="eyebrow">Взгляд на записи</p>
+                  <h1>Статистика</h1>
+                  <p class="subtitle">График и сводка за выбранный период.</p>
+                </div>
+                <button type="button" data-report>Отчёт для врача</button>
+              </div>
+              <div class="card">
+                <div class="section-heading">
+                  <div class="segmented" role="group" aria-label="Период графика">
+                    <button type="button" data-chart-period="today">День</button>
+                    <button type="button" data-chart-period="7" aria-pressed="true">Неделя</button>
+                    <button type="button" data-chart-period="30">Месяц</button>
+                  </div>
+                  <button id="expandChartBtn" type="button" class="text-btn">Развернуть ↗</button>
+                </div>
+                <div class="toolbar">
+                  <div>
+                    <label for="statsFrom">С</label>
+                    <input id="statsFrom" type="date" required />
+                  </div>
+                  <div>
+                    <label for="statsTo">По</label>
+                    <input id="statsTo" type="date" required />
+                  </div>
+                  <div class="unit-selector" role="group" aria-label="Единицы глюкозы">
+                    <button id="sugarUnitMmol" type="button">ммоль/л</button>
+                    <button id="sugarUnitMgdl" type="button">мг/дл</button>
+                  </div>
+                </div>
+                <p id="statsPeriodLabel" class="hint"></p>
+                <details id="chartOptions" class="chart-options">
+                  <summary>Вид графика: 2D / 3D</summary>
+                  <div class="segmented" role="group" aria-label="Режим графика">
+                    <button type="button" data-chart-view="2d" aria-pressed="true">2D</button>
+                    <button type="button" data-chart-view="3d">3D</button>
+                  </div>
+                </details>
+                <div id="sugarChart" class="local-chart"></div>
+                <section id="chart3dPanel" class="hidden">
+                  <div id="chart3d" class="chart3d"></div>
+                  <div class="two-cols">
+                    <div>
+                      <label for="chart3dYaw">
+                        Поворот
+                        <output id="chart3dAngle">−30°</output>
+                      </label>
+                      <input id="chart3dYaw" type="range" min="-70" max="-10" value="-30" />
+                    </div>
+                    <div>
+                      <label for="chart3dPoint">Измерение</label>
+                      <select id="chart3dPoint"></select>
+                    </div>
+                  </div>
+                  <p id="chart3dSelection" class="chart-selection" aria-live="polite"></p>
+                  <p id="chart3dInfo" class="hint"></p>
+                </section>
+                <p id="chartSelection" class="chart-selection" aria-live="polite">
+                  Нажмите на точку, чтобы увидеть значение.
+                </p>
+                <div id="chart2dLegend" class="chart-legend">
+                  <span>● В диапазоне</span>
+                  <span>◇ Вне диапазона</span>
+                  <span>Светлая область — целевой диапазон</span>
+                  <span>□ Еда</span>
+                  <span>△ Инсулин</span>
+                </div>
+                <div id="periodStats" class="stats-grid"></div>
+                <details id="chartRecords" class="help-disclosure">
+                  <summary>Выбрать запись из списка</summary>
+                  <div id="chartRecordList" class="chart-record-list"></div>
+                </details>
+                <details class="help-disclosure">
+                  <summary>Как читать показатели</summary>
+                  <p>
+                    Среднее — сумма значений, разделённая на число измерений. Минимум и максимум — крайние
+                    значения среди записей выбранного периода. Каждая запись учитывается один раз.
+                  </p>
+                  <p>
+                    Если измерения сделаны в разное время или с разной частотой, показатели периодов могут
+                    быть несопоставимы. Отсутствие записей означает отсутствие данных.
+                  </p>
+                </details>
+                <details id="statsComparisons" class="help-disclosure comparison">
+                  <summary>Сравнить периоды</summary>
+                  <p class="hint">Первый период выбран над графиком. Для сравнения укажите второй.</p>
+                  <div class="two-cols">
+                    <div>
+                      <label for="compareFrom">Второй период, с</label>
+                      <input id="compareFrom" type="date" />
+                    </div>
+                    <div>
+                      <label for="compareTo">По</label>
+                      <input id="compareTo" type="date" />
+                    </div>
+                  </div>
+                  <button id="previousPeriodBtn" type="button" class="text-btn">
+                    Предыдущий период той же длины
+                  </button>
+                  <div id="periodComparison" aria-live="polite"></div>
+                </details>
+                <p class="hint">
+                  Статистика отдельных измерений, а не непрерывного мониторинга. Будущие записи не
+                  учитываются.
+                </p>
+              </div>
+              <details id="statsDays" class="card day-compare">
+                <summary>Два дня на одной шкале</summary>
+                <div class="two-cols">
+                  <div>
+                    <label for="dayCompareA">Первый день</label>
+                    <input id="dayCompareA" type="date" />
+                  </div>
+                  <div>
+                    <label for="dayCompareB">Второй день</label>
+                    <input id="dayCompareB" type="date" />
+                  </div>
+                </div>
+                <div id="dayCompareChart" class="local-chart"></div>
+                <p id="dayCompareSelection" class="chart-selection" aria-live="polite"></p>
+                <p id="dayCompareInfo" class="hint"></p>
+                <form id="dayCompareForm">
+                  <label for="dayCompareNote">Моё наблюдение</label>
+                  <textarea
+                    id="dayCompareNote"
+                    maxlength="1000"
+                    placeholder="Что заметили при сравнении"
+                  ></textarea>
+                  <div class="button-row">
+                    <button type="submit">Сохранить наблюдение</button>
+                    <button type="button" class="secondary" id="dayCompareToReport">
+                      Добавить к темам приёма
+                    </button>
+                  </div>
+                </form>
+              </details>
+            </section>
+            <footer>
+              <span id="saveStatus" aria-live="polite">Данные сохраняются в этом браузере.</span>
+              <span>DiabControl · личный дневник</span>
+            </footer>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div
+      id="sugarModal"
+      class="modal-overlay hidden entry-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="sugarModalTitle"
+    >
+      <div class="modal-content">
+        <div class="modal-head">
+          <h2 id="sugarModalTitle">Измерение глюкозы</h2>
+          <button type="button" class="icon-btn close" data-close aria-label="Закрыть">×</button>
+        </div>
+        <form id="sugarForm" novalidate>
+          <div id="sugarDraft" class="draft-banner hidden"></div>
+          <p id="sugarDraftStatus" class="hint draft-status" role="status"></p>
+          <label for="sugarValueInput">
+            Значение
+            <span id="sugarInputUnit"></span>
+          </label>
+          <div class="value-with-unit">
+            <input
+              type="number"
+              id="sugarValueInput"
+              class="value-input"
+              required
+              step="any"
+              inputmode="decimal"
+            />
+            <span id="sugarValueUnit" aria-hidden="true">ммоль/л</span>
+          </div>
+          <details class="form-details" id="sugarDetails">
+            <summary>
+              Дата, время и заметка
+              <span id="sugarTimeHint"></span>
+            </summary>
+            <div class="two-cols">
+              <div>
+                <label for="sugarDateInput">Дата</label>
+                <input type="date" id="sugarDateInput" required />
+              </div>
+              <div>
+                <label for="sugarTimeInput">Время</label>
+                <input type="time" id="sugarTimeInput" required />
+              </div>
+            </div>
+            <button type="button" class="text-btn" data-now="sugar">Сейчас</button>
+            <div id="sugarRecentTags" class="recent-tags" aria-label="Частые метки"></div>
+            <label for="sugarTag">Контекст</label>
+            <select id="sugarTag">
+              <option value="">Без метки</option>
+              <option value="before">До еды</option>
+              <option value="after">После еды</option>
+              <option value="activity">Активность</option>
+              <option value="wellbeing">Самочувствие</option>
+              <option value="other">Другое</option>
+            </select>
+            <label for="sugarNote">Заметка</label>
+            <textarea id="sugarNote" maxlength="1000" placeholder="Что важно запомнить"></textarea>
+          </details>
+          <details class="form-details photo-editor">
+            <summary>
+              Фотографии
+              <span id="sugarPhotoCount"></span>
+            </summary>
+            <label for="sugarPhotoInput">Добавить фото (до 4)</label>
+            <input id="sugarPhotoInput" type="file" accept="image/jpeg,image/png,image/webp" />
+            <div id="sugarPhotos" class="photo-grid"></div>
+            <p class="hint">Фото сжимаются и сохраняются локально в зашифрованном виде.</p>
+          </details>
+          <div class="form-actions"><button type="submit" id="addSugarBtn">Сохранить запись</button></div>
+        </form>
+      </div>
+    </div>
+    <div
+      id="foodModal"
+      class="modal-overlay hidden entry-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="foodModalTitle"
+    >
+      <div class="modal-content">
+        <div class="modal-head">
+          <h2 id="foodModalTitle">Приём пищи</h2>
+          <button type="button" class="icon-btn close" data-close aria-label="Закрыть">×</button>
+        </div>
+        <form id="foodForm" novalidate>
+          <div id="foodDraft" class="draft-banner hidden"></div>
+          <p id="foodDraftStatus" class="hint draft-status" role="status"></p>
+          <label for="foodName">Продукт или блюдо</label>
+          <input id="foodName" required maxlength="200" placeholder="Например, овсяная каша" />
+          <div class="two-cols">
+            <div>
+              <label for="foodWeight">Вес, г</label>
+              <input
+                id="foodWeight"
+                type="number"
+                required
+                min="0.1"
+                max="100000"
+                step="any"
+                inputmode="decimal"
+              />
+            </div>
+            <div>
+              <label for="foodCarbsPer100">Углеводы на 100 г</label>
+              <input
+                id="foodCarbsPer100"
+                type="number"
+                required
+                min="0"
+                max="100"
+                step="any"
+                inputmode="decimal"
+              />
+            </div>
+          </div>
+          <div id="portionChoices" class="portion-choices"></div>
+          <details class="form-details">
+            <summary>Состав блюда и привычные порции</summary>
+            <label class="check-label">
+              <input type="checkbox" id="recipeMode" />
+              Рассчитать по ингредиентам
+            </label>
+            <div id="recipePanel" class="hidden">
+              <p class="hint">
+                Укажите вес и углеводы каждого ингредиента, затем общий вес готового блюда. Вес порции
+                задаётся выше.
+              </p>
+              <div id="ingredientRows"></div>
+              <button type="button" class="secondary" id="addIngredientBtn">＋ Ингредиент</button>
+              <label for="recipeYield">Вес всего готового блюда, г</label>
+              <input type="number" id="recipeYield" min="0.1" max="100000" step="any" inputmode="decimal" />
+              <p id="recipeResult" class="hint" aria-live="polite"></p>
+            </div>
+            <label for="foodSource">Источник значений углеводов</label>
+            <select id="foodSource">
+              <option value="manual">Введено вручную</option>
+              <option value="label">С упаковки</option>
+              <option value="recipe" disabled>Рассчитано по ингредиентам</option>
+              <option value="unknown">Не указан в старой записи</option>
+            </select>
+            <label for="foodPortions">Привычные порции, г</label>
+            <input id="foodPortions" maxlength="150" placeholder="100; 150; 200" />
+            <p class="hint">Разделяйте порции точкой с запятой. Они сохранятся вместе с блюдом.</p>
+          </details>
+          <details class="form-details">
+            <summary>Распознать этикетку</summary>
+            <label for="ocrPhoto">Фото этикетки</label>
+            <select id="ocrPhoto"></select>
+            <button id="ocrStartBtn" type="button" class="secondary">Распознать на устройстве</button>
+            <p id="ocrStatus" class="hint" role="status"></p>
+            <label for="ocrText">Распознанный текст — проверьте по фото</label>
+            <textarea id="ocrText" maxlength="12000"></textarea>
+            <label for="ocrCarbs">Углеводы на 100 г, г</label>
+            <input id="ocrCarbs" type="number" min="0" max="100" step="any" inputmode="decimal" />
+            <button id="ocrApplyBtn" type="button" class="secondary">
+              Подтвердить значение и перенести в блюдо
+            </button>
+          </details>
+          <div id="foodLiveResult" class="live-result" aria-live="polite">Введите вес и углеводы.</div>
+          <label for="foodType">Тип углеводов</label>
+          <select id="foodType">
+            <option value="unknown">Не указан</option>
+            <option value="fast">Быстрые</option>
+            <option value="slow">Медленные</option>
+          </select>
+          <details class="form-details" id="foodDetails">
+            <summary>
+              Дата, время и заметка
+              <span id="foodTimeHint"></span>
+            </summary>
+            <label for="foodTime">Дата и время</label>
+            <input type="datetime-local" id="foodTime" required />
+            <button type="button" class="text-btn" data-now="food">Сейчас</button>
+            <div id="foodRecentTags" class="recent-tags" aria-label="Частые метки"></div>
+            <label for="foodTag">Контекст</label>
+            <select id="foodTag">
+              <option value="">Без метки</option>
+              <option value="before">До еды</option>
+              <option value="after">После еды</option>
+              <option value="activity">Активность</option>
+              <option value="wellbeing">Самочувствие</option>
+              <option value="other">Другое</option>
+            </select>
+            <label for="foodNote">Заметка</label>
+            <textarea id="foodNote" maxlength="1000" placeholder="Что важно запомнить"></textarea>
+          </details>
+          <details class="form-details photo-editor">
+            <summary>
+              Фотографии
+              <span id="foodPhotoCount"></span>
+            </summary>
+            <label for="foodPhotoInput">Добавить фото (до 4)</label>
+            <input id="foodPhotoInput" type="file" accept="image/jpeg,image/png,image/webp" />
+            <div id="foodPhotos" class="photo-grid"></div>
+            <p class="hint">Фото сжимаются и сохраняются локально в зашифрованном виде.</p>
+          </details>
+          <div class="form-actions">
+            <button type="submit" id="addFoodBtn">Сохранить запись</button>
+            <button type="button" id="saveFavoriteBtn" class="secondary">☆ Сохранить в избранное</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div
+      id="insulinModal"
+      class="modal-overlay hidden entry-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="insulinModalTitle"
+    >
+      <div class="modal-content">
+        <div class="modal-head">
+          <h2 id="insulinModalTitle">Введение инсулина</h2>
+          <button type="button" class="icon-btn close" data-close aria-label="Закрыть">×</button>
+        </div>
+        <form id="insulinForm" novalidate>
+          <div id="insulinDraft" class="draft-banner hidden"></div>
+          <p id="insulinDraftStatus" class="hint draft-status" role="status"></p>
+          <p class="hint">Запишите фактически введённую дозу.</p>
+          <label for="insulinDose">Доза, ЕД</label>
+          <div class="value-with-unit">
+            <input
+              id="insulinDose"
+              class="value-input"
+              type="number"
+              required
+              min="0"
+              max="10000"
+              step="any"
+              inputmode="decimal"
+            />
+            <span aria-hidden="true">ЕД</span>
+          </div>
+          <label for="insulinName">Препарат</label>
+          <input id="insulinName" maxlength="120" list="insulinSuggestions" autocomplete="off" />
+          <datalist id="insulinSuggestions"></datalist>
+          <label for="insulinKind">Тип</label>
+          <select id="insulinKind">
+            <option value="bolus">Болюсный</option>
+            <option value="basal">Базальный</option>
+            <option value="unknown">Не указан</option>
+          </select>
+          <p id="legacyInsulinHint" class="notice hidden">
+            Старая запись обозначена в ХЕ. Уточните фактически введённую дозу в ЕД.
+          </p>
+          <details class="form-details" id="insulinDetails">
+            <summary>
+              Дата, время и заметка
+              <span id="insulinTimeHint"></span>
+            </summary>
+            <label for="insulinTime">Дата и время</label>
+            <input type="datetime-local" id="insulinTime" required />
+            <button type="button" class="text-btn" data-now="insulin">Сейчас</button>
+            <div id="insulinRecentTags" class="recent-tags" aria-label="Частые метки"></div>
+            <label for="insulinTag">Контекст</label>
+            <select id="insulinTag">
+              <option value="">Без метки</option>
+              <option value="before">До еды</option>
+              <option value="after">После еды</option>
+              <option value="activity">Активность</option>
+              <option value="wellbeing">Самочувствие</option>
+              <option value="other">Другое</option>
+            </select>
+            <label for="insulinNote">Заметка</label>
+            <textarea id="insulinNote" maxlength="1000" placeholder="Что важно запомнить"></textarea>
+          </details>
+          <details class="form-details photo-editor">
+            <summary>
+              Фотографии
+              <span id="insulinPhotoCount"></span>
+            </summary>
+            <label for="insulinPhotoInput">Добавить фото (до 4)</label>
+            <input id="insulinPhotoInput" type="file" accept="image/jpeg,image/png,image/webp" />
+            <div id="insulinPhotos" class="photo-grid"></div>
+            <p class="hint">Фото сжимаются и сохраняются локально в зашифрованном виде.</p>
+          </details>
+          <div class="form-actions"><button type="submit" id="addInsulinBtn">Сохранить запись</button></div>
+        </form>
+      </div>
+    </div>
+    <div
+      id="wellbeingModal"
+      class="modal-overlay hidden entry-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="wellbeingModalTitle"
+    >
+      <div class="modal-content">
+        <div class="modal-head">
+          <h2 id="wellbeingModalTitle">Самочувствие и активность</h2>
+          <button type="button" class="icon-btn close" data-close aria-label="Закрыть">×</button>
+        </div>
+        <form id="wellbeingForm" novalidate>
+          <div id="wellbeingDraft" class="draft-banner hidden"></div>
+          <p id="wellbeingDraftStatus" class="hint draft-status" role="status"></p>
+          <label for="wellbeingKind">Вид записи</label>
+          <select id="wellbeingKind">
+            <option value="wellbeing">Самочувствие</option>
+            <option value="activity">Активность</option>
+          </select>
+          <label for="wellbeingTitle">Короткое описание</label>
+          <input id="wellbeingTitle" required maxlength="200" placeholder="Например, прогулка после обеда" />
+          <label for="wellbeingContext">Контекст</label>
+          <select id="wellbeingContext">
+            <option value="">Без отметки</option>
+            <option value="sleep">Сон</option>
+            <option value="stress">Стресс</option>
+            <option value="walk">Прогулка</option>
+            <option value="exercise">Тренировка</option>
+            <option value="energy">Самочувствие</option>
+            <option value="observation">Моё наблюдение</option>
+          </select>
+          <label for="wellbeingNote">Что хотите запомнить</label>
+          <textarea id="wellbeingNote" maxlength="1000" placeholder="Наблюдения своими словами"></textarea>
+          <details id="wellbeingDetails" class="form-details">
+            <summary>
+              Дата и время
+              <span id="wellbeingTimeHint"></span>
+            </summary>
+            <label for="wellbeingTime">Дата и время</label>
+            <input id="wellbeingTime" type="datetime-local" required />
+            <button type="button" class="text-btn" data-now="wellbeing">Сейчас</button>
+          </details>
+          <details class="form-details photo-editor">
+            <summary>
+              Фотографии
+              <span id="wellbeingPhotoCount"></span>
+            </summary>
+            <label for="wellbeingPhotoInput">Добавить фото (до 4)</label>
+            <input id="wellbeingPhotoInput" type="file" accept="image/jpeg,image/png,image/webp" />
+            <div id="wellbeingPhotos" class="photo-grid"></div>
+            <p class="hint">Фото сжимаются и сохраняются локально в зашифрованном виде.</p>
+          </details>
+          <div class="form-actions"><button id="addWellbeingBtn" type="submit">Сохранить запись</button></div>
+        </form>
+      </div>
+    </div>
+    <div
+      id="profileModal"
+      class="modal-overlay hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="profileModalTitle"
+    >
+      <div class="modal-content">
+        <div class="modal-head">
+          <h2 id="profileModalTitle">Настройки</h2>
+          <button type="button" class="icon-btn close" data-close aria-label="Закрыть">×</button>
+        </div>
+        <div class="settings-tabs" role="group" aria-label="Настройки">
+          <button type="button" class="text-btn" data-settings="basic" aria-pressed="false">Профиль</button>
+          <button type="button" class="text-btn" data-settings="calc" aria-pressed="false">Расчёты</button>
+          <button type="button" class="text-btn" data-settings="contacts" aria-pressed="false">
+            Контакты
+          </button>
+          <button type="button" class="text-btn" data-settings="data" aria-pressed="false">
+            Данные и доступ
+          </button>
+          <button type="button" class="text-btn" data-settings="appearance" aria-pressed="false">
+            Оформление
+          </button>
+          <button type="button" class="text-btn" data-settings="help" aria-pressed="false">Помощь</button>
+        </div>
+        <form id="profileForm" novalidate>
+          <section id="settingsBasic" class="settings-section hidden">
+            <label for="profileDiabType">Тип диабета</label>
+            <select id="profileDiabType">
+              <option value="1">Тип 1</option>
+              <option value="2">Тип 2</option>
+            </select>
+            <label for="profilePump">Способ введения</label>
+            <select id="profilePump">
+              <option value="none">Помпы нет</option>
+              <option value="medtronic">Medtronic</option>
+              <option value="omnipod">Omnipod</option>
+              <option value="tslim">Tandem t:slim</option>
+              <option value="other">Другая помпа</option>
+            </select>
+            <label for="profilePumpModel">Модель помпы</label>
+            <input id="profilePumpModel" maxlength="200" />
+            <label for="profileShortInsulinName">Болюсный инсулин</label>
+            <input id="profileShortInsulinName" maxlength="120" />
+            <label for="profileLongInsulinName">Базальный инсулин</label>
+            <input id="profileLongInsulinName" maxlength="120" />
+          </section>
+          <section id="settingsCalc" class="settings-section hidden">
+            <h3>Единицы и целевой диапазон</h3>
+            <label for="profileUnit">Единицы глюкозы</label>
+            <select id="profileUnit">
+              <option value="mmol">ммоль/л</option>
+              <option value="mgdl">мг/дл</option>
+            </select>
+            <p class="hint">
+              Пороговые значения ниже всегда задаются в ммоль/л; на графике они переводятся в выбранные
+              единицы.
+            </p>
+            <div class="two-cols settings-field-grid">
+              <div>
+                <label for="targetLowInput">Нижняя граница, ммоль/л</label>
+                <input type="number" id="targetLowInput" required min="1" max="40" step="any" />
+              </div>
+              <div>
+                <label for="targetHighInput">Верхняя граница, ммоль/л</label>
+                <input type="number" id="targetHighInput" required min="1" max="40" step="any" />
+              </div>
+            </div>
+            <h3>Персональные коэффициенты</h3>
+            <p class="hint">
+              Начальный диапазон графика не является персональным назначением. Укажите параметры из
+              согласованного плана лечения. Пищевой коэффициент и коэффициент коррекции — разные
+              параметры: один нельзя использовать вместо другого.
+            </p>
+            <div class="two-cols settings-field-grid">
+              <div>
+                <label for="profileCarbsPerXE">Углеводы в 1 ХЕ, г</label>
+                <input type="number" id="profileCarbsPerXE" min="1" max="100" step="any" />
+              </div>
+              <div>
+                <label for="profileInsulinPerXE">Инсулин на 1 ХЕ, ЕД (необязательно)</label>
+                <input type="number" id="profileInsulinPerXE" min="0" step="any" />
+              </div>
+            </div>
+            <label class="check-label">
+              <input type="checkbox" id="profileDoseConfirmed" />
+              Коэффициенты взяты из моего согласованного плана лечения
+            </label>
+            <h3>Коррекция высокого сахара</h3>
+            <p class="hint">
+              Необязательный расчёт в экстренной помощи для взрослого в сознании. Перенесите все четыре
+              значения из своего плана врача. Приложение не подбирает коэффициенты и не вычисляет
+              активный инсулин по дневнику.
+            </p>
+            <div class="two-cols settings-field-grid">
+              <div>
+                <label for="profileCorrectionTarget">Цель коррекции, ммоль/л</label>
+                <input type="number" id="profileCorrectionTarget" min="4" max="10" step="any" />
+              </div>
+              <div>
+                <label for="profileCorrectionFactor">На сколько 1 ЕД снижает глюкозу, ммоль/л</label>
+                <input type="number" id="profileCorrectionFactor" min="0.01" max="100" step="any" />
+              </div>
+              <div>
+                <label for="profileCorrectionStep">Шаг дозы вашего устройства, ЕД</label>
+                <input type="number" id="profileCorrectionStep" min="0.01" max="10" step="0.01" />
+              </div>
+              <div>
+                <label for="profileCorrectionMax">Максимум одной коррекции по вашему плану, ЕД</label>
+                <input type="number" id="profileCorrectionMax" min="0.01" max="100" step="any" />
+              </div>
+            </div>
+            <p class="hint">
+              Название назначенного болюсного инсулина указывается в
+              <button type="button" class="text-btn" data-settings="basic">основных настройках профиля</button>.
+              Если в вашем плане нет этих данных, оставьте расчёт выключенным и уточните их у врача.
+            </p>
+            <label class="check-label">
+              <input type="checkbox" id="profileCorrectionConfirmed" />
+              Эти параметры и болюсный инсулин назначены мне врачом; мой план допускает такой расчёт
+              коррекции с вычитанием активного инсулина и округлением вниз
+            </label>
+          </section>
+          <section id="settingsContacts" class="settings-section hidden">
+            <h3>Контакты и информация для помощи</h3>
+            <label for="profilePhones">Телефоны — по одному в строке</label>
+            <textarea id="profilePhones" maxlength="500" placeholder="+7 …"></textarea>
+            <label for="profileAddress">Адрес</label>
+            <input id="profileAddress" maxlength="500" />
+            <label for="profileDoctor">Врач и контакт</label>
+            <input id="profileDoctor" maxlength="500" />
+            <label for="profileNotes">Аллергии и важные особенности</label>
+            <textarea id="profileNotes" maxlength="2000"></textarea>
+            <label for="profileMeasureInstruction">Как измерить глюкозу вашим прибором</label>
+            <textarea id="profileMeasureInstruction" maxlength="2000"></textarea>
+            <label for="profileHighSugarInstruction">Персональный план при высоком сахаре</label>
+            <textarea id="profileHighSugarInstruction" maxlength="2000"></textarea>
+            <label for="profileLowSugarInstruction">Персональный план при низком сахаре</label>
+            <textarea id="profileLowSugarInstruction" maxlength="2000"></textarea>
+            <label for="profileLowSugarUnconsciousInstruction">
+              Дополнения при потере сознания и низком сахаре
+            </label>
+            <textarea id="profileLowSugarUnconsciousInstruction" maxlength="2000"></textarea>
+            <label for="profileHighSugarUnconsciousInstruction">
+              Дополнения при потере сознания и высоком сахаре
+            </label>
+            <textarea id="profileHighSugarUnconsciousInstruction" maxlength="2000"></textarea>
+            <label for="profilePumpOffInstruction">Согласованные указания по помпе</label>
+            <textarea id="profilePumpOffInstruction" maxlength="2000"></textarea>
+          </section>
+          <div id="profileSaveArea" class="form-actions">
+            <button type="submit" id="saveProfileBtn">Сохранить настройки</button>
+          </div>
+        </form>
+        <section id="settingsAppearance" class="settings-section hidden">
+          <form id="appearanceForm">
+            <h3>Удобный вид дневника</h3>
+            <label for="themeChoice">Тема</label>
+            <select id="themeChoice">
+              <option value="light">Светлая</option>
+              <option value="dark">Тёмная</option>
+              <option value="system">Как на устройстве</option>
+            </select>
+            <label class="check-label">
+              <input type="checkbox" id="largeTextChoice" />
+              Крупный текст
+            </label>
+            <label class="check-label">
+              <input type="checkbox" id="contrastChoice" />
+              Повышенный контраст
+            </label>
+            <label class="check-label">
+              <input type="checkbox" id="motionChoice" checked />
+              Мягкие анимации
+            </label>
+            <p class="hint">Если на устройстве включено уменьшение движения, анимации отключатся автоматически.</p>
+            <div class="appearance-preview" aria-label="Предпросмотр оформления">
+              <p class="eyebrow">Предпросмотр</p>
+              <strong>Запись дневника</strong>
+              <p>Значение, время и заметка хорошо видны.</p>
+              <button type="button" class="secondary" disabled>Пример кнопки</button>
+            </div>
+            <h3>На экране «Сегодня»</h3>
+            <p class="hint">Выберите, какие блоки показывать. Быстрые кнопки добавления всегда доступны.</p>
+            <label class="check-label">
+              <input type="checkbox" id="showMeasurement" />
+              Последнее измерение и контекст
+            </label>
+            <label class="check-label">
+              <input type="checkbox" id="showSummary" />
+              Количество записей за день
+            </label>
+            <label class="check-label">
+              <input type="checkbox" id="showEvents" />
+              Последние события
+            </label>
+            <label class="check-label"><input type="checkbox" id="showWellbeing" />Самочувствие и личные наблюдения</label>
+            <label class="check-label"><input type="checkbox" id="showWeek" />Сводка за 7 дней</label>
+            <label class="check-label"><input type="checkbox" id="showDishes" />Привычные блюда</label>
+            <label class="check-label"><input type="checkbox" id="showVisit" />Вопросы к приёму и резервная копия</label>
+            <p class="hint">
+              Кнопки добавления остаются доступны при любом составе экрана. Изменения оформления видны сразу;
+              сохраните их для следующих входов.
+            </p>
+            <button type="submit" id="saveAppearanceBtn">Сохранить оформление</button>
+          </form>
+        </section>
+        <section id="settingsHelp" class="settings-section hidden">
+          <h3>Как пользоваться дневником</h3>
+          <p>Посмотрите порядок действий или попробуйте сами.</p>
+          <button type="button" class="secondary" data-open-start-guide>Быстрый гайд →</button>
+          <button type="button" class="secondary" data-open-learning>Открыть тренировку →</button>
+          <details class="help-disclosure">
+            <summary>Добавить или исправить запись</summary>
+            <p>
+              На экране «Сегодня» выберите вид записи, заполните поля и нажмите «Сохранить запись». Дата и
+              время находятся в раскрывающемся блоке. Для исправления откройте ⋯ возле записи → «Изменить».
+            </p>
+            <p>
+              Последнее удаление можно отменить, пока профиль открыт. Незавершённый ввод сохраняется в
+              зашифрованный черновик. После входа откройте ту же форму и нажмите «Продолжить черновик».
+              Черновики не входят в статистику.
+            </p>
+          </details>
+          <details class="help-disclosure">
+            <summary>Перенести дневник на другое устройство</summary>
+            <ol>
+              <li>
+                В разделе «Данные и доступ» нажмите «Сохранить копию» и убедитесь, что JSON-файл скачан.
+              </li>
+              <li>Перенесите файл приложения и копию на другое устройство.</li>
+              <li>
+                Откройте приложение, выберите «Восстановить из копии», укажите новое имя и пароль,
+                действовавший при создании копии.
+              </li>
+              <li>Проверьте состав и восстановите отдельный профиль.</li>
+            </ol>
+            <p>
+              Дневники на разных устройствах не синхронизируются. Очистка данных браузера удаляет локальный
+              дневник.
+            </p>
+          </details>
+          <details class="help-disclosure">
+            <summary>Проверить резервную копию</summary>
+            <p>
+              Откройте форму восстановления, выберите JSON, введите свободное имя профиля и пароль копии.
+              Нажмите «Посмотреть содержимое». Если видны период и количество записей, копия расшифрована. На
+              этом шаге дневник не изменяется. Для полной проверки можно восстановить отдельный профиль.
+            </p>
+            <button type="button" id="checkBackupBtn" class="secondary">Открыть проверку копии</button>
+          </details>
+          <details class="help-disclosure">
+            <summary>Подготовить отчёт к приёму</summary>
+            <p>
+              В «Статистике» нажмите «Отчёт для врача», выберите даты, напишите вопросы и темы для обсуждения.
+              Отметьте заметки, которые хотите включить. Проверьте предпросмотр и выберите «Печать / сохранить
+              PDF». В системном диалоге выберите сохранение в PDF.
+            </p>
+            <p>
+              Первая часть содержит сводку и вопросы, далее идёт хронология. CSV содержит записи и выбранные
+              заметки; вопросы к приёму находятся в PDF.
+            </p>
+          </details>
+          <details class="help-disclosure">
+            <summary>Блюдо из ингредиентов и порции</summary>
+            <p>
+              В форме питания раскройте «Состав блюда и привычные порции». Включите расчёт по ингредиентам,
+              заполните их состав и общий вес готового блюда. Углеводы порции пересчитываются по её весу.
+              Сохраните шаблон, чтобы повторно использовать состав и привычные порции.
+            </p>
+          </details>
+        </section>
+        <section id="settingsData" class="settings-section hidden">
+          <h3>Мои данные</h3>
+          <section class="install-panel">
+            <h3>Установка и перенос</h3>
+            <p id="installationStatus" class="hint"></p>
+            <button type="button" id="installAppBtn" class="secondary hidden">Установить приложение</button>
+            <p class="hint">
+              Установленная версия и HTML-файл используют разные хранилища. Для первого переноса сохраните
+              зашифрованную копию в прежней версии и восстановите отдельный профиль здесь. Автоматической
+              синхронизации нет.
+            </p>
+          </section>
+          <button type="button" id="csvImportBtn" class="secondary">Импорт из CSV</button>
+          <div id="importHistory"></div>
+          <p id="mediaStorageInfo" class="hint"></p>
+          <button type="button" id="cleanMediaBtn" class="secondary">Очистить неиспользуемые фото</button>
+          <p class="hint">
+            Сохраняем фото из записей, шаблонов, истории, корзины и черновиков. Очистка удаляет только файлы
+            без связей.
+          </p>
+          <p id="backupInfo" class="notice"></p>
+          <div class="button-row">
+            <button type="button" id="exportBtn">Сохранить копию</button>
+            <button type="button" id="importBtn" class="secondary">Восстановить</button>
+          </div>
+          <p class="hint">JSON-копия зашифрована. Для восстановления нужен пароль на момент её создания.</p>
+          <button type="button" id="recoveryExportBtn" class="secondary">Аварийная копия</button>
+          <p class="hint">
+            Если архив повреждён, можно сохранить записи и доступные фотографии. Перед скачиванием покажем,
+            какие вложения отсутствуют.
+          </p>
+          <button type="button" id="lockDiaryBtn" class="secondary">Закрыть дневник</button>
+          <h3>Автоблокировка</h3>
+          <form id="accessForm" novalidate>
+            <label for="lockMinutes">Закрывать дневник без действий через</label>
+            <select id="lockMinutes">
+              <option value="0">Не блокировать автоматически</option>
+              <option value="1">1 минуту</option>
+              <option value="5">5 минут</option>
+              <option value="15">15 минут</option>
+              <option value="30">30 минут</option>
+            </select>
+            <button type="submit" class="secondary" id="saveAccessBtn">Сохранить</button>
+          </form>
+          <h3>Сменить пароль</h3>
+          <form id="passwordForm" novalidate>
+            <label for="currentPassword">Текущий пароль</label>
+            <input id="currentPassword" type="password" autocomplete="current-password" required />
+            <label for="newPassword">Новый пароль — от 10 символов</label>
+            <input id="newPassword" type="password" autocomplete="new-password" minlength="10" required />
+            <label for="confirmPassword">Повторите новый пароль</label>
+            <input id="confirmPassword" type="password" autocomplete="new-password" minlength="10" required />
+            <button id="changePasswordBtn" type="submit">Обновить пароль</button>
+            <p class="hint">
+              Ранее выгруженные копии продолжат открываться старым паролем. После смены сохраните новую копию.
+            </p>
+          </form>
+        </section>
+      </div>
+    </div>
+    <!-- EMERGENCY_MODAL -->
+    <!-- LEARNING_MODAL -->
+    <!-- START_GUIDE_MODAL -->
+    <!-- ENTRY_LAUNCHER_MODAL -->
+    <div
+      id="restoreModal"
+      class="modal-overlay hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="restoreModalTitle"
+    >
+      <div class="modal-content">
+        <div class="modal-head">
+          <h2 id="restoreModalTitle">Восстановление копии</h2>
+          <button type="button" class="icon-btn close" data-close aria-label="Закрыть">×</button>
+        </div>
+        <p class="hint">Сначала посмотрите содержимое. Восстановление создаёт отдельный профиль.</p>
+        <form id="restoreForm" novalidate>
+          <label for="restoreFile">Зашифрованная копия JSON</label>
+          <input type="file" id="restoreFile" accept=".json,application/json" required />
+          <label for="restoreName">Имя нового профиля</label>
+          <input id="restoreName" required maxlength="80" autocomplete="off" />
+          <label for="restorePassword">Пароль копии</label>
+          <input type="password" id="restorePassword" required autocomplete="off" />
+          <button type="submit" id="previewRestoreBtn">Посмотреть содержимое</button>
+        </form>
+        <div id="restorePreview" class="hidden"></div>
+        <button type="button" id="restoreSubmitBtn" class="hidden">Восстановить отдельный профиль</button>
+      </div>
+    </div>
+    <div
+      id="confirmModal"
+      class="modal-overlay hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="confirmModalTitle"
+    >
+      <div class="modal-content">
+        <div class="modal-head">
+          <h2 id="confirmModalTitle">Удалить запись?</h2>
+          <button type="button" class="icon-btn close" data-close aria-label="Закрыть">×</button>
+        </div>
+        <p id="confirmText"></p>
+        <div class="button-row">
+          <button type="button" id="confirmDeleteBtn">Удалить</button>
+          <button type="button" data-close class="secondary">Отмена</button>
+        </div>
+      </div>
+    </div>
+    <div
+      id="chartModal"
+      class="modal-overlay hidden wide-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="chartModalTitle"
+    >
+      <div class="modal-content">
+        <div class="modal-head">
+          <h2 id="chartModalTitle">График глюкозы</h2>
+          <button type="button" class="icon-btn close" data-close aria-label="Закрыть">×</button>
+        </div>
+        <div id="expandedChart" class="local-chart"></div>
+        <details id="expandedRecords" class="help-disclosure">
+          <summary>Выбрать запись из списка</summary>
+          <div id="expandedRecordList" class="chart-record-list"></div>
+        </details>
+        <p id="expandedSelection" class="chart-selection" aria-live="polite">Нажмите на точку.</p>
+      </div>
+    </div>
+    <div
+      id="reportModal"
+      class="modal-overlay hidden wide-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="reportModalTitle"
+    >
+      <div class="modal-content">
+        <div class="modal-head">
+          <h2 id="reportModalTitle">Отчёт для врача</h2>
+          <button type="button" class="icon-btn close" data-close aria-label="Закрыть">×</button>
+        </div>
+        <form id="reportForm" class="report-controls" novalidate>
+          <div>
+            <label for="reportFrom">Начало периода</label>
+            <input type="date" id="reportFrom" required />
+          </div>
+          <div>
+            <label for="reportTo">Конец периода</label>
+            <input type="date" id="reportTo" required />
+          </div>
+          <button id="buildReportBtn" type="submit">Обновить отчёт</button>
+        </form>
+        <div class="button-row report-controls">
+          <button type="button" id="printReportBtn">Печать / сохранить PDF</button>
+          <button type="button" id="csvReportBtn" class="secondary">Скачать CSV</button>
+        </div>
+        <p class="hint report-controls">
+          PDF сохраняется через диалог печати браузера. Отчёт и CSV содержат открытые медицинские записи.
+        </p>
+        <details class="report-options report-controls">
+          <summary>Вопросы к приёму и заметки</summary>
+          <label for="reportQuestions">Вопросы к приёму</label>
+          <textarea
+            id="reportQuestions"
+            maxlength="1500"
+            placeholder="Какие вопросы хотите задать"
+          ></textarea>
+          <label for="reportTopics">Что хочу обсудить</label>
+          <textarea
+            id="reportTopics"
+            maxlength="1500"
+            placeholder="Наблюдения, которые важно обсудить"
+          ></textarea>
+          <button type="button" id="saveReportNotesBtn" class="secondary">Сохранить вопросы</button>
+          <p id="reportNotesStatus" class="hint" role="status"></p>
+          <label class="check-label">
+            <input type="checkbox" id="reportIncludePhotos" />
+            Включить фотографии в PDF
+          </label>
+          <h3>Заметки в отчёте</h3>
+          <div class="button-row">
+            <button type="button" id="selectAllNotes" class="text-btn">Включить все</button>
+            <button type="button" id="selectNoNotes" class="text-btn">Убрать все</button>
+          </div>
+          <div id="reportNoteChoices"></div>
+          <p class="hint">Выбор влияет на PDF и CSV, исходные записи остаются в дневнике.</p>
+        </details>
+        <p id="reportCollectionBanner" class="notice hidden"></p>
+        <div id="reportPreview"></div>
+      </div>
+    </div>
+    <div
+      id="onboardingModal"
+      class="modal-overlay hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="onboardingModalTitle"
+    >
+      <div class="modal-content">
+        <div class="modal-head">
+          <h2 id="onboardingModalTitle">Настроим ваш дневник</h2>
+          <button type="button" class="icon-btn close" data-close aria-label="Закрыть">×</button>
+        </div>
+        <p id="onboardingProgress" class="eyebrow" aria-live="polite">Шаг 1 из 3</p>
+        <form id="onboardingForm" novalidate>
+          <section data-step="0">
+            <h3>Привычные единицы</h3>
+            <p>Вы сможете изменить их в настройках.</p>
+            <label for="setupUnit">Глюкоза</label>
+            <select id="setupUnit">
+              <option value="mmol">ммоль/л</option>
+              <option value="mgdl">мг/дл</option>
+            </select>
+          </section>
+          <section data-step="1" class="hidden">
+            <h3>Расчёт углеводов</h3>
+            <p>Необязательный шаг. Укажите значение из своего плана или оставьте поле пустым.</p>
+            <label for="setupCarbs">Углеводов в 1 ХЕ, г</label>
+            <input type="number" id="setupCarbs" min="1" max="100" step="any" />
+            <p class="hint">Инсулиновый коэффициент настраивается отдельно.</p>
+          </section>
+          <section data-step="2" class="hidden">
+            <h3>Контакт для помощи</h3>
+            <p>Необязательно. Контакт будет виден в экстренном окне после входа.</p>
+            <label for="setupPhone">Телефон</label>
+            <input type="tel" id="setupPhone" maxlength="40" />
+            <p class="notice">После настройки сохраните зашифрованную копию в разделе «Данные и доступ».</p>
+          </section>
+          <div class="button-row">
+            <button type="button" id="setupBack" class="secondary hidden">Назад</button>
+            <button type="submit" id="setupNext">Далее</button>
+            <button type="button" id="setupSkip" class="text-btn">Настроить позже</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- EXPLORE_MODALS -->
+    <noscript>Для работы дневника включите JavaScript. Экстренная помощь: 112 или 103.</noscript>
+    <script>
+      /* OCR_LIBRARY */
+    </script>
+    <script id="ocrResources" type="application/json">
+      /* OCR_RESOURCES */
+    </script>
+    <script>
+      /* APP_JS */
+    </script>
+  </body>
+</html>

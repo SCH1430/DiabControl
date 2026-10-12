@@ -1,0 +1,174 @@
+<div
+  id="quickTextModal"
+  class="modal-overlay hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="quickTextTitle"
+>
+  <div class="modal-content">
+    <div class="modal-head">
+      <h2 id="quickTextTitle">Записать одной фразой</h2>
+      <button type="button" class="icon-btn" data-close aria-label="Закрыть">×</button>
+    </div>
+    <form id="quickTextForm">
+      <label for="quickTextInput">Что записать</label>
+      <textarea
+        id="quickTextInput"
+        required
+        maxlength="1000"
+        placeholder="В 14:30 глюкоза 6,3, после еды"
+      ></textarea>
+      <p class="hint">
+        Другие примеры: «Еда яблоко, 150 г, углеводы 12 г на 100 г»; «Введён инсулин 2 ЕД»; «Активность:
+        прогулка». Можно указать дату ДД.ММ.ГГГГ. Пропущенные дата и время означают сейчас.
+      </p>
+      <button type="submit">Проверить</button>
+    </form>
+    <div id="quickTextPreview" class="notice hidden"></div>
+    <button type="button" id="quickTextApply" class="hidden">Открыть заполненную форму</button>
+  </div>
+</div>
+<div
+  id="historyModal"
+  class="modal-overlay hidden wide-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="historyTitle"
+>
+  <div class="modal-content">
+    <div class="modal-head">
+      <h2 id="historyTitle">История изменений</h2>
+      <button type="button" class="icon-btn" data-close aria-label="Закрыть">×</button>
+    </div>
+    <p class="hint">
+      До 20 последних изменений одной записи; до 1000 изменений в профиле. Восстановление создаёт новое
+      изменение.
+    </p>
+    <div id="historyContent"></div>
+  </div>
+</div>
+<div
+  id="photoModal"
+  class="modal-overlay hidden wide-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="photoTitle"
+>
+  <div class="modal-content">
+    <div class="modal-head">
+      <h2 id="photoTitle">Фотография</h2>
+      <button type="button" class="icon-btn" data-close aria-label="Закрыть">×</button>
+    </div>
+    <img id="fullPhoto" class="full-photo" alt="Фотография из дневника" />
+  </div>
+</div>
+<div
+  id="collectionModal"
+  class="modal-overlay hidden wide-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="collectionTitle"
+>
+  <div class="modal-content">
+    <div class="modal-head">
+      <h2 id="collectionTitle">Подборка событий</h2>
+      <button type="button" class="icon-btn" data-close aria-label="Закрыть">×</button>
+    </div>
+    <form id="collectionForm">
+      <label for="collectionName">Название</label>
+      <input id="collectionName" maxlength="160" required placeholder="Например, ужин в гостях" />
+      <label for="collectionNote">Мой комментарий</label>
+      <textarea id="collectionNote" maxlength="1500"></textarea>
+      <label for="collectionSearch">Найти записи</label>
+      <input id="collectionSearch" type="search" placeholder="Название, заметка или дата" />
+      <p id="collectionSelectedCount" class="hint"></p>
+      <div id="collectionChoices" class="collection-choices"></div>
+      <div class="form-actions">
+        <button type="submit">Сохранить подборку</button>
+        <button type="button" id="collectionReportBtn" class="secondary hidden">Отчёт по подборке</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div
+  id="dishHistoryModal"
+  class="modal-overlay hidden wide-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="dishHistoryTitle"
+>
+  <div class="modal-content">
+    <div class="modal-head">
+      <h2 id="dishHistoryTitle">История блюда</h2>
+      <button type="button" class="icon-btn" data-close aria-label="Закрыть">×</button>
+    </div>
+    <div id="dishHistoryContent"></div>
+  </div>
+</div>
+<div
+  id="csvImportModal"
+  class="modal-overlay hidden wide-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="csvImportTitle"
+>
+  <div class="modal-content">
+    <div class="modal-head">
+      <h2 id="csvImportTitle">Импорт записей из CSV</h2>
+      <button type="button" class="icon-btn" data-close aria-label="Закрыть">×</button>
+    </div>
+    <label for="csvImportFile">Файл CSV (UTF-8, до 5 МБ и 1000 записей)</label>
+    <input id="csvImportFile" type="file" accept=".csv,text/csv" />
+    <form id="csvMappingForm" class="hidden">
+      <div id="csvMapping" class="two-cols"></div>
+      <div class="two-cols">
+        <div>
+          <label for="csvDefaultType">Тип, если столбца нет</label>
+          <select id="csvDefaultType">
+            <option value="sugar">Глюкоза</option>
+            <option value="food">Питание</option>
+            <option value="insulin">Инсулин</option>
+            <option value="wellbeing">Самочувствие</option>
+          </select>
+        </div>
+        <div>
+          <label for="csvDefaultUnit">Единицы глюкозы, если столбца нет</label>
+          <select id="csvDefaultUnit">
+            <option value="">Выберите единицы</option>
+            <option value="mmol">ммоль/л</option>
+            <option value="mgdl">мг/дл</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit">Предпросмотр импорта</button>
+    </form>
+    <div id="csvImportPreview"></div>
+    <label class="check-label hidden" id="csvSkipInvalidLabel">
+      <input type="checkbox" id="csvSkipInvalid" />
+      Пропустить показанные строки с ошибками
+    </label>
+    <button type="button" id="csvConfirmImport" class="hidden">Импортировать проверенные записи</button>
+  </div>
+</div>
+
+<div
+  id="recoveryModal"
+  class="modal-overlay hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="recoveryTitle"
+>
+  <div class="modal-content">
+    <div class="modal-head">
+      <h2 id="recoveryTitle">Аварийная копия</h2>
+      <button type="button" class="icon-btn" data-close aria-label="Закрыть">×</button>
+    </div>
+    <p id="recoverySummary"></p>
+    <ul id="recoveryMissing"></ul>
+    <p class="notice">
+      В копию войдут записи, настройки, история и черновики. Связи с недоступными фотографиями будут убраны
+      только из копии. Для восстановления нужен текущий пароль.
+    </p>
+    <button type="button" id="downloadRecoveryBtn">Скачать зашифрованную копию</button>
+  </div>
+</div>

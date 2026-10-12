@@ -1,0 +1,41 @@
+    <div
+      id="entryLauncherModal"
+      class="modal-overlay hidden entry-launcher-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="entryLauncherTitle"
+      aria-describedby="entryLauncherDescription"
+    >
+      <div class="modal-content">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">ДОБАВИТЬ В ДНЕВНИК</p>
+            <h2 id="entryLauncherTitle">Что запишем?</h2>
+          </div>
+          <button type="button" class="icon-btn close" data-close aria-label="Закрыть выбор записи">×</button>
+        </div>
+        <p id="entryLauncherDescription" class="entry-launcher-description">Начните с главного. Остальные детали можно добавить позже.</p>
+        <div class="entry-launcher-options">
+          <button type="button" data-launch-entry="sugar" class="entry-launcher-option">
+            <span class="entry-launcher-symbol" aria-hidden="true"></span>
+            <span><strong>Глюкоза</strong><small>Результат измерения</small></span>
+            <span class="entry-launcher-arrow" aria-hidden="true">→</span>
+          </button>
+          <button type="button" data-launch-entry="food" class="entry-launcher-option">
+            <span class="entry-launcher-symbol" aria-hidden="true"></span>
+            <span><strong>Питание</strong><small>Блюдо и порция</small></span>
+            <span class="entry-launcher-arrow" aria-hidden="true">→</span>
+          </button>
+          <button type="button" data-launch-entry="insulin" class="entry-launcher-option">
+            <span class="entry-launcher-symbol" aria-hidden="true"></span>
+            <span><strong>Инсулин</strong><small>Уже введённая доза</small></span>
+            <span class="entry-launcher-arrow" aria-hidden="true">→</span>
+          </button>
+          <button type="button" data-launch-entry="wellbeing" class="entry-launcher-option">
+            <span class="entry-launcher-symbol" aria-hidden="true"></span>
+            <span><strong>Заметка</strong><small>Самочувствие и активность</small></span>
+            <span class="entry-launcher-arrow" aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
+    </div>

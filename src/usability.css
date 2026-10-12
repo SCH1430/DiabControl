@@ -1,0 +1,234 @@
+/* Theme states use the same semantic palette in every view. */
+.segmented button[aria-pressed='true'],
+.settings-tabs button[aria-pressed='true'] {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--line);
+}
+.settings-tabs,
+.record-note,
+.unit-selector button {
+  background: var(--surface-soft);
+  color: var(--ink);
+}
+.unit-selector button.active {
+  background: var(--button);
+  color: var(--on-button);
+}
+.field-error,
+.form-error {
+  color: var(--red);
+}
+[data-theme='dark'] .form-error {
+  background: var(--surface-soft);
+}
+.record-details > summary {
+  position: relative;
+  padding-right: 24px;
+  min-height: 44px;
+}
+.record-chevron {
+  position: absolute;
+  top: 0;
+  right: 2px;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--muted);
+}
+.record-details[open] > summary .record-chevron {
+  transform: rotate(90deg);
+}
+.record-details[open] > summary {
+  padding-bottom: 10px;
+}
+.diary-filters {
+  margin: 14px 0;
+  border-block: 1px solid var(--line);
+  padding: 8px 0;
+}
+.diary-filters > summary,
+.chart-options > summary,
+.day-compare > summary {
+  cursor: pointer;
+  font-weight: 650;
+  min-height: 44px;
+  padding: 10px 0;
+}
+.diary-filters > summary {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.diary-filters .toolbar {
+  margin: 8px 0;
+}
+.chart-options {
+  margin: 8px 0;
+}
+.chart-options > summary {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.chart-options .segmented {
+  margin: 0 0 12px;
+}
+.comparison {
+  border: 1px solid var(--line);
+  margin-top: 14px;
+  padding: 14px 16px;
+}
+.day-compare {
+  margin-top: 16px;
+}
+.day-compare > summary {
+  font-size: 1.1rem;
+}
+.chart-record-list {
+  max-height: 320px;
+  overflow-y: auto;
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+.chart-record-list button {
+  text-align: left;
+  min-height: 48px;
+  white-space: normal;
+}
+.chart-record-list button span,
+.chart-record-list button strong {
+  display: block;
+}
+.chart-record-list button span {
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+.page h1:focus {
+  outline-offset: 6px;
+}
+#recoveryMissing {
+  max-height: 35vh;
+  overflow: auto;
+  overflow-wrap: anywhere;
+}
+.install-panel {
+  margin-top: 20px;
+}
+.install-panel button {
+  margin: 8px 8px 0 0;
+}
+@media (max-width: 600px) {
+  #pageStats .section-heading {
+    flex-wrap: wrap;
+  }
+  #pageStats .section-heading .segmented {
+    max-width: 100%;
+    margin: 0;
+  }
+  .large-text .toolbar > div {
+    flex-basis: 100%;
+    min-width: 0;
+  }
+  .pages {
+    padding-top: 16px;
+  }
+  #pageToday .page-heading {
+    margin-bottom: 12px;
+  }
+  #pageToday .hero-card {
+    padding: 16px 18px;
+  }
+  #pageToday .hero-value {
+    font-size: 2.85rem;
+  }
+  #pageToday .hero-card p {
+    margin-bottom: 0;
+  }
+  .day-summary {
+    padding: 10px 16px;
+  }
+  .day-summary > .eyebrow {
+    display: none;
+  }
+  .day-counts {
+    margin-top: 0;
+    align-items: center;
+  }
+  .day-counts > div {
+    display: flex;
+    gap: 5px;
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+  .day-counts strong {
+    font-size: 1.1rem;
+  }
+  .day-counts small {
+    font-size: 0.75rem;
+  }
+  .quick-actions {
+    margin: 10px 0 6px;
+  }
+  .quick-action {
+    padding: 10px 4px;
+  }
+  .today-tools {
+    margin-bottom: 12px;
+    gap: 4px;
+  }
+  .today-tools button {
+    min-height: 44px;
+  }
+  #pageDiary .page-heading {
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  #pageDiary .page-heading .eyebrow,
+  #pageDiary .page-heading .subtitle {
+    display: none;
+  }
+  #pageDiary .page-heading h1 {
+    font-size: 1.5rem;
+  }
+  #pageDiary .page-heading .button-row {
+    margin: 0;
+    flex-wrap: nowrap;
+    gap: 4px;
+  }
+  #pageDiary .page-heading button {
+    font-size: 0.8rem;
+    min-height: 44px;
+    padding: 8px;
+  }
+  #pageDiary .diary-views {
+    margin-bottom: 12px;
+  }
+  #diaryListPanel {
+    padding: 12px;
+  }
+  #diaryListPanel > label {
+    margin-top: 0;
+  }
+  .diary-filters {
+    margin: 10px 0;
+    padding: 0;
+  }
+  #diaryResultCount {
+    margin: 8px 0;
+  }
+  .timeline-day {
+    margin-top: 8px;
+  }
+  .timeline-row {
+    padding: 12px 0;
+  }
+  .chart-legend {
+    font-size: 0.8rem;
+  }
+  .entry-menu summary {
+    width: 36px;
+  }
+  .large-text #pageDiary .page-heading {
+    align-items: start;
+  }
+}

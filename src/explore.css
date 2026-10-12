@@ -1,0 +1,236 @@
+.diary-views {
+  margin: 0 0 18px;
+  flex-wrap: wrap;
+}
+.calendar-week,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+.calendar-week {
+  text-align: center;
+  color: var(--muted);
+  margin: 16px 0 8px;
+}
+.calendar-day {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 95px;
+  background: var(--surface-soft);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  padding: 10px;
+  gap: 5px;
+}
+.calendar-day strong {
+  font-size: 1.1rem;
+}
+.calendar-day small,
+.calendar-marks {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.calendar-day.is-today {
+  outline: 2px solid var(--teal);
+  outline-offset: -2px;
+}
+.history-row {
+  border-bottom: 1px solid var(--line);
+  padding: 20px 0;
+  overflow-wrap: anywhere;
+}
+.history-row h3 {
+  margin-top: 0;
+}
+.collection-choices {
+  max-height: 40vh;
+  overflow: auto;
+  margin: 15px 0;
+}
+.collection-choices label {
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+  align-items: flex-start;
+}
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.photo-preview {
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  overflow: hidden;
+}
+.photo-preview img {
+  display: block;
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+}
+.full-photo {
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  display: block;
+  margin: auto;
+}
+.photo-links {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.photo-links button {
+  font-size: 0.85rem;
+}
+.day-compare {
+  margin-top: 24px;
+}
+.day-key.first {
+  color: var(--blue);
+}
+.day-key.second {
+  color: var(--teal);
+}
+.compare-a {
+  stroke: var(--blue);
+  fill: var(--blue);
+}
+.compare-b {
+  stroke: var(--teal);
+  fill: var(--teal);
+}
+polyline.compare-a,
+polyline.compare-b {
+  fill: none;
+}
+.event-mark {
+  stroke: none;
+  font-size: 17px !important;
+  cursor: pointer;
+}
+.chart3d {
+  touch-action: pan-y;
+  cursor: grab;
+}
+.chart3d svg {
+  width: 100%;
+  display: block;
+  overflow: visible;
+}
+.chart3d text,
+.day-compare svg text {
+  font-size: 12px;
+  fill: var(--ink);
+}
+.space-grid {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+.space-axis {
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+.space-stem {
+  stroke: var(--teal);
+  stroke-width: 1.5;
+  opacity: 0.25;
+}
+.space-stem.selected {
+  opacity: 1;
+  stroke-width: 2;
+}
+.space-point {
+  fill: var(--teal);
+}
+.space-ring {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+#chart3dPanel .two-cols {
+  align-items: end;
+}
+input[type='range'] {
+  padding: 8px 0;
+  border: 0;
+  accent-color: var(--teal);
+  background: transparent;
+}
+#csvImportPreview table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.87rem;
+}
+#csvImportPreview td,
+#csvImportPreview th {
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+#quickTextPreview {
+  white-space: normal;
+}
+.report-photos img {
+  width: 200px;
+  max-width: 100%;
+  height: auto;
+  max-height: 160px;
+  object-fit: contain;
+}
+@media (max-width: 600px) {
+  .calendar-grid {
+    gap: 3px;
+  }
+  .calendar-day {
+    min-height: 78px;
+    padding: 5px 3px;
+  }
+  .calendar-day strong {
+    font-size: 0.9rem;
+  }
+  .calendar-day small,
+  .calendar-marks {
+    font-size: 0.63rem;
+    overflow-wrap: anywhere;
+  }
+  .calendar-week {
+    gap: 3px;
+    font-size: 0.8rem;
+  }
+  .diary-views button {
+    padding: 8px;
+    font-size: 0.8rem;
+  }
+  .photo-preview img {
+    height: 110px;
+  }
+  .day-compare {
+    padding: 16px 10px;
+  }
+  .history-row .two-cols {
+    grid-template-columns: 1fr;
+  }
+  .collection-choices {
+    max-height: 35dvh;
+  }
+  .large-text .calendar-day {
+    padding: 4px 1px;
+  }
+  .large-text .calendar-marks {
+    font-size: 0.6rem;
+  }
+}
+@media print {
+  #reportCollectionBanner {
+    display: none !important;
+  }
+  .report-photos {
+    break-inside: avoid;
+  }
+}
